@@ -1,0 +1,418 @@
+[
+  {
+    "content": "Dataset: Unknown\nTotal traces: 500\nSampled traces: Unknown\nSamples per trace: Unknown\nSample rate: 4.0 ms",
+    "metadata": {
+      "source": "dataset_metadata",
+      "chunk_index": 0
+    },
+    "doc_id": "dataset_metadata_0"
+  },
+  {
+    "content": "Data Validation Results:\nTotal traces: 500\nTotal files: 5\nValidation passed: True\nSample rate consistent: True\nNum samples consistent: True\n\nNo anomalies detected.\n\nClass Label Distribution:\n  - Normal (class 0): 260\n  - Anomaly (class 1): 146\n  - Boundary (class 2): 94",
+    "metadata": {
+      "source": "validation_results",
+      "chunk_index": 0
+    },
+    "doc_id": "validation_results_0"
+  },
+  {
+    "content": "LLM Schema Analysis\n============================================================\n\n**Data Quality Concerns:**\n\n1. **Missing values**: The `null_counts` dictionary indicates that there are no missing values in any of the columns, which is unusual for seismic data. Typically, seismic data has a significant number of missing values due to various reasons such as instrument errors or data corruption.\n2.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 0
+    },
+    "doc_id": "llm_schema_analysis.txt_0"
+  },
+  {
+    "content": "such as instrument errors or data corruption.\n2. **Data type consistency**: The `dtypes` dictionary shows that most columns have integer or float data types, but `trace_data` and `file_id` are objects. This inconsistency may indicate that the data is not properly formatted or that there are missing values in these columns.\n3.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 1
+    },
+    "doc_id": "llm_schema_analysis.txt_1"
+  },
+  {
+    "content": "hat there are missing values in these columns.\n3. **Sample rate and num_samples**: The presence of both `sample_rate` and `num_samples` columns suggests that the data has been preprocessed to extract samples from a larger dataset. However, it's unclear why both columns exist, and whether they contain redundant information.\n\n**Potential Issues:**\n\n1.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 2
+    },
+    "doc_id": "llm_schema_analysis.txt_2"
+  },
+  {
+    "content": "redundant information.\n\n**Potential Issues:**\n\n1. **Data integrity**: The schema does not provide any information about data validation or quality control measures taken during data collection or preprocessing.\n2. **Data format compatibility**: The presence of object-type columns (`trace_data` and `file_id`) may indicate that the data is not in a standard, machine-readable format, which could lead to issues when working with the data in downstream analysis pipelines.\n3.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 3
+    },
+    "doc_id": "llm_schema_analysis.txt_3"
+  },
+  {
+    "content": "ith the data in downstream analysis pipelines.\n3. **Scalability**: With 500 traces and 5 files, this dataset appears relatively small compared to typical seismic datasets. As the dataset grows, it's essential to consider scalability concerns, such as storage requirements, processing time, and data management.\n\n**Recommendations for Preprocessing:**\n\n1. **Data validation**: Implement data validation checks to ensure that the data is consistent with expected formats and ranges.\n2.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 4
+    },
+    "doc_id": "llm_schema_analysis.txt_4"
+  },
+  {
+    "content": "s consistent with expected formats and ranges.\n2. **Data type normalization**: Normalize the data types of all columns to a standard format (e.g., integer or float) to facilitate easier analysis and processing.\n3. **Missing value handling**: Investigate and address any missing values in the dataset, which may indicate issues during data collection or preprocessing.\n4.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 5
+    },
+    "doc_id": "llm_schema_analysis.txt_5"
+  },
+  {
+    "content": "ssues during data collection or preprocessing.\n4. **Data formatting**: Consider converting object-type columns (`trace_data` and `file_id`) into standard formats (e.g., CSV or JSON) to facilitate easier analysis and processing.\n5. **Data normalization**: Normalize the data to a common scale or range to improve analysis and comparison across different datasets.\n6.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 6
+    },
+    "doc_id": "llm_schema_analysis.txt_6"
+  },
+  {
+    "content": "ysis and comparison across different datasets.\n6. **Data partitioning**: Partition the dataset into training, validation, and testing sets to ensure that models are trained and evaluated on representative samples of the data.\n\nBy addressing these concerns and implementing recommended preprocessing steps, you can improve the quality and usability of your seismic data for downstream analysis and modeling tasks.",
+    "metadata": {
+      "source": "llm_schema_analysis.txt",
+      "chunk_index": 7
+    },
+    "doc_id": "llm_schema_analysis.txt_7"
+  },
+  {
+    "content": "================================================================================\nDATA QUALITY EVALUATION REPORT\n================================================================================\n\nGenerated: 2026-01-20T17:10:04.120419\nPriority: LOW\nRecommended Action: PASS\n\nReasoning: ACTION: PASS\nREASONING: The data quality is acceptable, with no anomalies detected and all validation checks passing.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 0
+    },
+    "doc_id": "quality_report_20260120_171004.txt_0"
+  },
+  {
+    "content": "alies detected and all validation checks passing. Additionally, the analysis summary indicates successful statistical, domain, and drift analyses.\n\n================================================================================\n\nVALIDATION RESULTS\n--------------------------------------------------------------------------------\nTotal Traces: 500\nTotal Files: 5\nValidation Passed: True\nQuality Score: N/A",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 1
+    },
+    "doc_id": "quality_report_20260120_171004.txt_1"
+  },
+  {
+    "content": "es: 5\nValidation Passed: True\nQuality Score: N/A\n\n================================================================================\nSTATISTICAL ANALYSIS\n--------------------------------------------------------------------------------\nBased on the provided statistical properties of seismic data, I'll analyze each point and provide a detailed report.\n\n**1.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 2
+    },
+    "doc_id": "quality_report_20260120_171004.txt_2"
+  },
+  {
+    "content": "e each point and provide a detailed report.\n\n**1. Are amplitude ranges reasonable for seismic data?**\n\nUnfortunately, there is no information about the amplitude ranges in the provided statistics. Typically, amplitude ranges are crucial in seismic data analysis as they can indicate the strength of seismic signals.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 3
+    },
+    "doc_id": "quality_report_20260120_171004.txt_3"
+  },
+  {
+    "content": "hey can indicate the strength of seismic signals. Without this information, it's challenging to assess whether the amplitude ranges are reasonable or not.\n\n**Recommendation:** Include amplitude range statistics (min, max, mean, and std) in the analysis to ensure that the amplitude values are within expected limits for seismic data.\n\n**2.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 4
+    },
+    "doc_id": "quality_report_20260120_171004.txt_4"
+  },
+  {
+    "content": "re within expected limits for seismic data.\n\n**2. Are coordinate ranges consistent?**\n\nThe provided statistics show that the coordinate ranges for CDP X and Y are:\n\n* \"cdp_x\": min = 0.0, max = 2475.0, mean = 1237.5, std = 722.3744872291651\n* \"cdp_y\": min = 0.0, max = 4000.0, mean = 2000.0, std = 1415.629900797544\n\nThe coordinate ranges appear to be reasonable for seismic data.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 5
+    },
+    "doc_id": "quality_report_20260120_171004.txt_5"
+  },
+  {
+    "content": "ranges appear to be reasonable for seismic data. However, there are some concerns:\n\n* The standard deviation (std) of CDP X is relatively high (722.3744872291651), which might indicate a significant spread in the data.\n* The maximum value of CDP Y (4000.0) seems unusually large compared to the mean (2000.0). This could be an indication of outliers or anomalies.\n\n**Recommendation:** Investigate the cause of the high standard deviation in CDP X and verify that there are no errors in the data.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 6
+    },
+    "doc_id": "quality_report_20260120_171004.txt_6"
+  },
+  {
+    "content": "and verify that there are no errors in the data. Also, examine the distribution of CDP Y values to ensure that they are within expected limits.\n\n**3. Is class distribution balanced?**\n\nThe provided statistics show that the class distribution is:\n\n* \"0\": 260 (52.0%)\n* \"1\": 146 (29.2%)\n* \"2\": 94 (18.8%)\n\nThe balance score is 0.07728949680922315, which indicates a moderate imbalance in the class distribution.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 7
+    },
+    "doc_id": "quality_report_20260120_171004.txt_7"
+  },
+  {
+    "content": "s a moderate imbalance in the class distribution.\n\n**Recommendation:** The class distribution appears to be imbalanced, with Class 0 having a significantly higher proportion of samples than Classes 1 and 2. This might affect the performance of machine learning models. Consider oversampling the minority classes or undersampling the majority class to balance the dataset.\n\n**4.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 8
+    },
+    "doc_id": "quality_report_20260120_171004.txt_8"
+  },
+  {
+    "content": "the majority class to balance the dataset.\n\n**4. Identify statistical anomalies**\n\nThe validation results show that there are no anomalies in the data:\n\n* \"anomalies\": []\n\nHowever, based on the coordinate ranges analysis above, it's possible that there might be some outliers or errors in the data.\n\n**Recommendation:** Perform a more thorough investigation of the data to identify any potential anomalies or errors.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 9
+    },
+    "doc_id": "quality_report_20260120_171004.txt_9"
+  },
+  {
+    "content": "ta to identify any potential anomalies or errors. This could involve visualizing the data, checking for missing values, and verifying the accuracy of the data.\n\n**5. Check for outliers in trace amplitudes**\n\nUnfortunately, there is no information about the amplitude ranges or distribution in the provided statistics.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 10
+    },
+    "doc_id": "quality_report_20260120_171004.txt_10"
+  },
+  {
+    "content": "anges or distribution in the provided statistics. However, based on the analysis above, it's possible that there might be some outliers or anomalies in the amplitude values.\n\n**Recommendation:** Include amplitude range statistics (min, max, mean, and std) in the analysis to ensure that the amplitude values are within expected limits for seismic data.\n\n**6.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 11
+    },
+    "doc_id": "quality_report_20260120_171004.txt_11"
+  },
+  {
+    "content": "re within expected limits for seismic data.\n\n**6. Validate correlation patterns**\n\nThe validation results show that the sample rate consistency is true:\n\n* \"sample_rate_consistency\": true\n\nHowever, there is no information about the correlation patterns between different variables (e.g., CDP X and Y).",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 12
+    },
+    "doc_id": "quality_report_20260120_171004.txt_12"
+  },
+  {
+    "content": "between different variables (e.g., CDP X and Y). Typically, correlation analysis is performed to identify relationships between variables in seismic data.\n\n**Recommendation:** Perform a correlation analysis to identify any relationships between different variables.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 13
+    },
+    "doc_id": "quality_report_20260120_171004.txt_13"
+  },
+  {
+    "content": "fy any relationships between different variables. This could involve calculating correlation coefficients (e.g., Pearson's r) or visualizing the data using scatter plots.\n\nIn summary, while the provided statistics appear to be generally reasonable for seismic data, there are some concerns and recommendations:\n\n* Include amplitude range statistics in the analysis.\n* Investigate the cause of high standard deviation in CDP X and verify that there are no errors in the data.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 14
+    },
+    "doc_id": "quality_report_20260120_171004.txt_14"
+  },
+  {
+    "content": "and verify that there are no errors in the data.\n* Examine the distribution of CDP Y values to ensure they are within expected limits.\n* Balance the class distribution by oversampling minority classes or undersampling majority class.\n* Perform a more thorough investigation of the data to identify any potential anomalies or errors.\n* Include correlation analysis to identify relationships between different variables.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 15
+    },
+    "doc_id": "quality_report_20260120_171004.txt_15"
+  },
+  {
+    "content": "entify relationships between different variables.\n\n================================================================================\nDOMAIN-SPECIFIC VALIDATION\n--------------------------------------------------------------------------------\n**Validation Report**\n\nBased on the provided domain checks, I have identified several areas of concern that require attention. Here's a detailed report:\n\n1.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 16
+    },
+    "doc_id": "quality_report_20260120_171004.txt_16"
+  },
+  {
+    "content": "require attention. Here's a detailed report:\n\n1. **Are trace amplitudes within expected seismic ranges?**\n\t* No information is available about the amplitude values in the provided data. However, it is essential to check the amplitude distribution and ensure they are within reasonable ranges (e.g., not excessively high or low).\n2. **Is sample rate within industry standards (0.5-4ms)?**\n\t* The sample rate is reported as 2.0 ms, which falls within the standard range of 0.5-4.0 ms.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 17
+    },
+    "doc_id": "quality_report_20260120_171004.txt_17"
+  },
+  {
+    "content": "ch falls within the standard range of 0.5-4.0 ms. This meets the industry standard.\n3. **Are spatial coordinates consistent and reasonable?**\n\t* The inline range is [0, 4], which seems unusual for a seismic dataset. Typically, inlines should cover a larger area (e.g., hundreds to thousands of meters).",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 18
+    },
+    "doc_id": "quality_report_20260120_171004.txt_18"
+  },
+  {
+    "content": "ger area (e.g., hundreds to thousands of meters). The crossline range is more typical with [0, 99].\n\t* The unique inlines (5) and unique crosslines (100) are relatively low compared to the total traces (500), indicating that there may be repetition or gaps in the data.\n4. **Are there dead traces (zero variance)?**\n\t* No information is available about the variance of individual traces.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 19
+    },
+    "doc_id": "quality_report_20260120_171004.txt_19"
+  },
+  {
+    "content": "vailable about the variance of individual traces. However, it's essential to check for any zero-variance values, which can indicate issues with data quality or processing.\n5. **Check for geophysical consistency (inline/crossline relationships)**\n\t* The reported inline and crossline ranges suggest a relatively small survey area, but without further analysis, it's difficult to assess the geophysical consistency of the dataset.\n6.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 20
+    },
+    "doc_id": "quality_report_20260120_171004.txt_20"
+  },
+  {
+    "content": "ss the geophysical consistency of the dataset.\n6. **Validate data completeness**\n\t* The total traces (500) and total files (5) indicate that there is some missing data or gaps in the coverage.\n\n**Specific Issues and Recommendations:**\n\n1.  Investigate the amplitude distribution and ensure they are within reasonable ranges.\n2.  Review the inline range and consider expanding it to cover a larger area if necessary.\n3.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 21
+    },
+    "doc_id": "quality_report_20260120_171004.txt_21"
+  },
+  {
+    "content": "anding it to cover a larger area if necessary.\n3.  Check for any repetition or gaps in the data by analyzing the unique inlines and crosslines more thoroughly.\n4.  Verify that there are no dead traces (zero variance) in the dataset.\n5.  Perform further analysis on the geophysical consistency of the dataset, including inline/crossline relationships and spatial variability.\n6.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 22
+    },
+    "doc_id": "quality_report_20260120_171004.txt_22"
+  },
+  {
+    "content": "ossline relationships and spatial variability.\n6.  Investigate the missing data or gaps in coverage to ensure that all required information is available.\n\n**Action Items:**\n\n1.  Re-check amplitude distribution and adjust processing parameters if necessary.\n2.  Expand inline range if necessary to cover a larger area.\n3.  Analyze unique inlines and crosslines more thoroughly to identify repetition or gaps.\n4.  Check for dead traces (zero variance) and address any issues found.\n5.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 23
+    },
+    "doc_id": "quality_report_20260120_171004.txt_23"
+  },
+  {
+    "content": "(zero variance) and address any issues found.\n5.  Perform geophysical consistency analysis using additional tools and techniques.\n6.  Investigate missing data or gaps in coverage and take corrective action if necessary.\n\nBy addressing these specific issues, you can improve the quality and accuracy of your seismic dataset.",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 24
+    },
+    "doc_id": "quality_report_20260120_171004.txt_24"
+  },
+  {
+    "content": "the quality and accuracy of your seismic dataset.\n\n================================================================================\nDATA DRIFT DETECTION\n--------------------------------------------------------------------------------\nNo historical data available for comparison\n\n================================================================================\nEND OF REPORT\n================================================================================",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 25
+    },
+    "doc_id": "quality_report_20260120_171004.txt_25"
+  },
+  {
+    "content": "====",
+    "metadata": {
+      "source": "quality_report_20260120_171004.txt",
+      "chunk_index": 26
+    },
+    "doc_id": "quality_report_20260120_171004.txt_26"
+  },
+  {
+    "content": "Feature Engineering Summary:\nTotal features: 40\nHandcrafted features: 8\nEmbedding features: 32\nSamples: 500\nFeature names: mean_amplitude, std_amplitude, min_amplitude, max_amplitude, rms_amplitude, energy, zero_crossings, dominant_frequency, embedding_0, embedding_1, embedding_2, embedding_3, embedding_4, embedding_5, embedding_6, embedding_7, embedding_8, embedding_9, embedding_10, embedding_11, embedding_12, embedding_13, embedding_14, embedding_15, embedding_16, embedding_17, embedding_18, e",
+    "metadata": {
+      "source": "feature_summary",
+      "chunk_index": 0
+    },
+    "doc_id": "feature_summary_0"
+  },
+  {
+    "content": "ng_15, embedding_16, embedding_17, embedding_18, embedding_19, embedding_20, embedding_21, embedding_22, embedding_23, embedding_24, embedding_25, embedding_26, embedding_27, embedding_28, embedding_29, embedding_30, embedding_31",
+    "metadata": {
+      "source": "feature_summary",
+      "chunk_index": 1
+    },
+    "doc_id": "feature_summary_1"
+  },
+  {
+    "content": "Statistical Analysis Report: F3 Dataset vs Testing Dataset\n================================================================================\n\nGenerated: 2026-01-20 20:00:10\n\n## 1. Original F3 Dataset Analysis\n\n### Dataset Information\n- File: Temp\\f3_dataset.sgy\n- Total Traces: 600,515\n- Samples per Trace: 462\n- Sample Rate: 4.00 ms\n- Analysis Sample Size: 10,000 traces",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 0
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_0"
+  },
+  {
+    "content": "e: 4.00 ms\n- Analysis Sample Size: 10,000 traces\n\n### Trace Statistics\n- Mean of Means: -1.8148\n- Std of Means: 17.9278\n- Mean of Stds: 2480.0822\n- Std of Stds: 162.8306\n- Overall Range: [-29974.00, 30311.00]\n\n### Normal Distribution Tests\n\n**Dagostino Pearson:**\n- Statistic: 143.8266\n- P-value: 0.0000\n- Is Normal (p > 0.05): False\n\n**Jarque Bera:**\n- Statistic: 262.1297\n- P-value: 0.0000\n- Is Normal (p > 0.05): False",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 1
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_1"
+  },
+  {
+    "content": "- P-value: 0.0000\n- Is Normal (p > 0.05): False\n\n### Class Distribution\n- Normal (class 0): 5106 (51.06%)\n- Anomaly (class 1): 2972 (29.72%)\n- Boundary (class 2): 1922 (19.22%)\n\n### Balance Score\n- Balance Score: 0.9292 (1.0 = perfectly balanced)\n\n---\n\n## 2.",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 2
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_2"
+  },
+  {
+    "content": "re: 0.9292 (1.0 = perfectly balanced)\n\n---\n\n## 2. Testing Dataset Analysis\n\n### Dataset Information\n- File: data\\bronze\\seismic_data.parquet\n- Total Traces: 500\n- Samples per Trace: 462\n- Sample Rate: 4.00 ms\n\n### Trace Statistics\n- Mean of Means: -2.1825\n- Std of Means: 18.0715\n- Mean of Stds: 2471.9019\n- Std of Stds: 196.8681\n- Overall Range: [-26048.00, 28127.00]\n\n### Normal Distribution Tests\n\n**Shapiro Wilk:**\n- Statistic: 0.9875\n- P-value: 0.0003\n- Is Normal (p > 0.05): False",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 3
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_3"
+  },
+  {
+    "content": "- P-value: 0.0003\n- Is Normal (p > 0.05): False\n\n**Dagostino Pearson:**\n- Statistic: 15.8922\n- P-value: 0.0004\n- Is Normal (p > 0.05): False\n\n**Jarque Bera:**\n- Statistic: 32.8006\n- P-value: 0.0000\n- Is Normal (p > 0.05): False\n\n### Class Distribution\n- Normal (class 0): 260 (52.0%)\n- Anomaly (class 1): 146 (29.2%)\n- Boundary (class 2): 94 (18.8%)\n\n### Balance Score\n- Balance Score: 0.9227 (1.0 = perfectly balanced)\n\n---\n\n## 3.",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 4
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_4"
+  },
+  {
+    "content": "re: 0.9227 (1.0 = perfectly balanced)\n\n---\n\n## 3. Comparison Analysis\n\n### Trace Statistics Comparison\n\n**Mean of Means:**\n- F3: -1.8148\n- Test: -2.1825\n- Difference: -0.3677 (-20.26%)\n\n**Mean of Stds:**\n- F3: 2480.0822\n- Test: 2471.9019\n- Difference: -8.1803 (-0.33%)\n\n### Normal Distribution Tests Comparison\n\n**Dagostino Pearson:**\n- F3: normal=False, p=0.0000\n- Test: normal=False, p=0.0004\n- Agreement: True",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 5
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_5"
+  },
+  {
+    "content": "- Test: normal=False, p=0.0004\n- Agreement: True\n\n**Jarque Bera:**\n- F3: normal=False, p=0.0000\n- Test: normal=False, p=0.0000\n- Agreement: True\n\n### Class Distribution Comparison\n\n**Normal:**\n- F3: 51.06%\n- Test: 52.0%\n- Difference: 0.94%\n\n**Anomaly:**\n- F3: 29.72%\n- Test: 29.2%\n- Difference: -0.52%\n\n**Boundary:**\n- F3: 19.22%\n- Test: 18.8%\n- Difference: -0.42%\n\n### Balance Score Comparison\n- F3: 0.9292\n- Test: 0.9227\n- Difference: -0.0065\n\n---\n\n## 4.",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 6
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_6"
+  },
+  {
+    "content": "- Test: 0.9227\n- Difference: -0.0065\n\n---\n\n## 4. Key Findings\n\n### Statistical Similarity\n- **Low Similarity**: Testing dataset shows significant differences from F3 dataset\n\n### Normal Distribution\n- All normal distribution tests show **agreement** between F3 and test datasets\n\n### Class Balance\n- Class distributions are **very similar** between datasets\n\n\n---\n\n## 5. Recommendations\n\n1. **Data Representativeness**: Consider increasing sample size or adjusting sampling strategy\n2.",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 7
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_7"
+  },
+  {
+    "content": "ing sample size or adjusting sampling strategy\n2. **Normal Distribution**: Both datasets show similar distribution characteristics\n3. **Class Balance**: Class distributions are well-balanced\n4. **Model Training**: Review sampling strategy to better match F3 characteristics\n\n---\n\n**End of Report**",
+    "metadata": {
+      "source": "f3_vs_test_statistical_comparison.txt",
+      "chunk_index": 8
+    },
+    "doc_id": "f3_vs_test_statistical_comparison.txt_8"
+  },
+  {
+    "content": "Seismic Data Analysis Domain Knowledge:\n        \n        1. SEG-Y Format:\n        - Standard format for seismic data storage\n        - Contains trace data (amplitude values) and headers (metadata)\n        - Headers include inline, crossline, CDP coordinates\n        - Sample rate typically 1-4 ms\n        \n        2.",
+    "metadata": {
+      "source": "domain_knowledge",
+      "chunk_index": 0
+    },
+    "doc_id": "domain_knowledge_0"
+  },
+  {
+    "content": "Sample rate typically 1-4 ms\n        \n        2. Seismic Traces:\n        - Each trace represents amplitude over time at a location\n        - Traces are organized by inline and crossline numbers\n        - Amplitude values indicate subsurface reflections\n        \n        3. Data Quality Indicators:\n        - Consistent sample rates across traces\n        - No dead traces (zero variance)\n        - Reasonable amplitude ranges\n        - Complete spatial coverage\n        \n        4.",
+    "metadata": {
+      "source": "domain_knowledge",
+      "chunk_index": 1
+    },
+    "doc_id": "domain_knowledge_1"
+  },
+  {
+    "content": "- Complete spatial coverage\n        \n        4. Feature Engineering for Seismic:\n        - Statistical features: mean, std, min, max, RMS amplitude\n        - Frequency features: dominant frequency from FFT\n        - Energy features: total energy, zero crossings\n        - Embeddings: compressed representations using PCA or autoencoders\n        \n        5.",
+    "metadata": {
+      "source": "domain_knowledge",
+      "chunk_index": 2
+    },
+    "doc_id": "domain_knowledge_2"
+  },
+  {
+    "content": "ons using PCA or autoencoders\n        \n        5. Classification Tasks:\n        - Normal: typical seismic response\n        - Anomaly: unusual patterns (faults, bright spots)\n        - Boundary: geological boundaries\n        \n        6. F3 Netherlands Dataset:\n        - Public seismic dataset from North Sea\n        - 3D seismic survey\n        - Contains ~600,000 traces\n        - 462 samples per trace at 4ms sample rate",
+    "metadata": {
+      "source": "domain_knowledge",
+      "chunk_index": 3
+    },
+    "doc_id": "domain_knowledge_3"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "total_traces": 500,
+  "total_files": 5,
+  "class_distribution": {
+    "0": 0.52,
+    "1": 0.292,
+    "2": 0.188
+  }
+}

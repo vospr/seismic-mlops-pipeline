@@ -1,0 +1,80 @@
+# Seismic MLOps Pipeline - Docker Compose Configuration
+# Run with: docker-compose up -d
+
+services:
+  # Main MLOps Pipeline Service
+  mlops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seismic-mlops
+    ports:
+      - "8000:8000"   # FastAPI
+      - "8001:8001"   # Prometheus metrics
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./mlruns:/app/mlruns
+      - ./feature_store:/app/feature_store
+      - ./src:/app/src
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  # MLflow Tracking Server
+  mlflow:
+    image: python:3.11-slim
+    container_name: seismic-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlruns
+    command: >
+      bash -c "pip install mlflow && 
+               mlflow ui --host 0.0.0.0 --port 5000 --backend-store-uri file:///mlruns"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:5000\")' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  # Ollama LLM Service (optional)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: seismic-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - mlops-network
+    profiles:
+      - llm  # Only start with: docker-compose --profile llm up
+
+networks:
+  mlops-network:
+    driver: bridge
+
+volumes:
+  ollama-data:
+    driver: local

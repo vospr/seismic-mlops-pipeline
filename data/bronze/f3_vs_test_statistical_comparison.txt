@@ -1,0 +1,159 @@
+Statistical Analysis Report: F3 Dataset vs Testing Dataset
+================================================================================
+
+Generated: 2026-01-20 20:00:10
+
+## 1. Original F3 Dataset Analysis
+
+### Dataset Information
+- File: Temp\f3_dataset.sgy
+- Total Traces: 600,515
+- Samples per Trace: 462
+- Sample Rate: 4.00 ms
+- Analysis Sample Size: 10,000 traces
+
+### Trace Statistics
+- Mean of Means: -1.8148
+- Std of Means: 17.9278
+- Mean of Stds: 2480.0822
+- Std of Stds: 162.8306
+- Overall Range: [-29974.00, 30311.00]
+
+### Normal Distribution Tests
+
+**Dagostino Pearson:**
+- Statistic: 143.8266
+- P-value: 0.0000
+- Is Normal (p > 0.05): False
+
+**Jarque Bera:**
+- Statistic: 262.1297
+- P-value: 0.0000
+- Is Normal (p > 0.05): False
+
+### Class Distribution
+- Normal (class 0): 5106 (51.06%)
+- Anomaly (class 1): 2972 (29.72%)
+- Boundary (class 2): 1922 (19.22%)
+
+### Balance Score
+- Balance Score: 0.9292 (1.0 = perfectly balanced)
+
+---
+
+## 2. Testing Dataset Analysis
+
+### Dataset Information
+- File: data\bronze\seismic_data.parquet
+- Total Traces: 500
+- Samples per Trace: 462
+- Sample Rate: 4.00 ms
+
+### Trace Statistics
+- Mean of Means: -2.1825
+- Std of Means: 18.0715
+- Mean of Stds: 2471.9019
+- Std of Stds: 196.8681
+- Overall Range: [-26048.00, 28127.00]
+
+### Normal Distribution Tests
+
+**Shapiro Wilk:**
+- Statistic: 0.9875
+- P-value: 0.0003
+- Is Normal (p > 0.05): False
+
+**Dagostino Pearson:**
+- Statistic: 15.8922
+- P-value: 0.0004
+- Is Normal (p > 0.05): False
+
+**Jarque Bera:**
+- Statistic: 32.8006
+- P-value: 0.0000
+- Is Normal (p > 0.05): False
+
+### Class Distribution
+- Normal (class 0): 260 (52.0%)
+- Anomaly (class 1): 146 (29.2%)
+- Boundary (class 2): 94 (18.8%)
+
+### Balance Score
+- Balance Score: 0.9227 (1.0 = perfectly balanced)
+
+---
+
+## 3. Comparison Analysis
+
+### Trace Statistics Comparison
+
+**Mean of Means:**
+- F3: -1.8148
+- Test: -2.1825
+- Difference: -0.3677 (-20.26%)
+
+**Mean of Stds:**
+- F3: 2480.0822
+- Test: 2471.9019
+- Difference: -8.1803 (-0.33%)
+
+### Normal Distribution Tests Comparison
+
+**Dagostino Pearson:**
+- F3: normal=False, p=0.0000
+- Test: normal=False, p=0.0004
+- Agreement: True
+
+**Jarque Bera:**
+- F3: normal=False, p=0.0000
+- Test: normal=False, p=0.0000
+- Agreement: True
+
+### Class Distribution Comparison
+
+**Normal:**
+- F3: 51.06%
+- Test: 52.0%
+- Difference: 0.94%
+
+**Anomaly:**
+- F3: 29.72%
+- Test: 29.2%
+- Difference: -0.52%
+
+**Boundary:**
+- F3: 19.22%
+- Test: 18.8%
+- Difference: -0.42%
+
+### Balance Score Comparison
+- F3: 0.9292
+- Test: 0.9227
+- Difference: -0.0065
+
+---
+
+## 4. Key Findings
+
+### Statistical Similarity
+- **Low Similarity**: Testing dataset shows significant differences from F3 dataset
+
+### Normal Distribution
+- All normal distribution tests show **agreement** between F3 and test datasets
+
+### Class Balance
+- Class distributions are **very similar** between datasets
+
+
+---
+
+## 5. Recommendations
+
+1. **Data Representativeness**: Consider increasing sample size or adjusting sampling strategy
+2. **Normal Distribution**: Both datasets show similar distribution characteristics
+3. **Class Balance**: Class distributions are well-balanced
+4. **Model Training**: Review sampling strategy to better match F3 characteristics
+
+---
+
+**End of Report**

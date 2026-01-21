@@ -1,0 +1,10 @@
+{
+  "model_name": "SeismicClassifier",
+  "version": 2,
+  "timestamp": "2026-01-20T14:24:03.478909",
+  "artifacts": [
+    "model.pkl",
+    "feature_scaler.pkl",
+    "evaluation_results.json"
+  ]
+}

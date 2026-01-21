@@ -1,0 +1,250 @@
+{
+  "metrics": {
+    "accuracy": 0.49,
+    "precision_macro": 0.6095679012345679,
+    "precision_weighted": 0.5612962962962963,
+    "recall_macro": 0.3608241425845781,
+    "recall_weighted": 0.49,
+    "f1_macro": 0.3370967741935484,
+    "f1_weighted": 0.43537096774193534,
+    "num_features": 40,
+    "num_samples": 100,
+    "precision_normal": 0.5694444444444444,
+    "recall_normal": 0.7884615384615384,
+    "f1_normal": 0.661290322580645,
+    "precision_anomaly": 0.25925925925925924,
+    "recall_anomaly": 0.2413793103448276,
+    "f1_anomaly": 0.25,
+    "precision_boundary": 1.0,
+    "recall_boundary": 0.05263157894736842,
+    "f1_boundary": 0.1,
+    "roc_auc_macro": 0.4902726499839109,
+    "roc_auc_weighted": 0.5078007085724222,
+    "confusion_matrix": [
+      [
+        41,
+        11,
+        0
+      ],
+      [
+        22,
+        7,
+        0
+      ],
+      [
+        9,
+        9,
+        1
+      ]
+    ],
+    "classification_report": {
+      "normal": {
+        "precision": 0.5694444444444444,
+        "recall": 0.7884615384615384,
+        "f1-score": 0.661290322580645,
+        "support": 52.0
+      },
+      "anomaly": {
+        "precision": 0.25925925925925924,
+        "recall": 0.2413793103448276,
+        "f1-score": 0.25,
+        "support": 29.0
+      },
+      "boundary": {
+        "precision": 1.0,
+        "recall": 0.05263157894736842,
+        "f1-score": 0.1,
+        "support": 19.0
+      },
+      "accuracy": 0.49,
+      "macro avg": {
+        "precision": 0.6095679012345679,
+        "recall": 0.3608241425845781,
+        "f1-score": 0.3370967741935484,
+        "support": 100.0
+      },
+      "weighted avg": {
+        "precision": 0.5612962962962963,
+        "recall": 0.49,
+        "f1-score": 0.43537096774193534,
+        "support": 100.0
+      }
+    }
+  },
+  "drift_detection": {
+    "features_drifted": [
+      21
+    ],
+    "features_drifted_names": [
+      "embedding_13_scaled"
+    ],
+    "ks_statistics": {
+      "mean_amplitude_scaled": 0.095,
+      "std_amplitude_scaled": 0.08875,
+      "min_amplitude_scaled": 0.1175,
+      "max_amplitude_scaled": 0.090625,
+      "rms_amplitude_scaled": 0.08875,
+      "energy_scaled": 0.08875,
+      "zero_crossings_scaled": 0.119375,
+      "dominant_frequency_scaled": 0.135625,
+      "embedding_0_scaled": 0.06875,
+      "embedding_1_scaled": 0.12625,
+      "embedding_2_scaled": 0.0975,
+      "embedding_3_scaled": 0.095625,
+      "embedding_4_scaled": 0.094375,
+      "embedding_5_scaled": 0.070625,
+      "embedding_6_scaled": 0.084375,
+      "embedding_7_scaled": 0.134375,
+      "embedding_8_scaled": 0.045,
+      "embedding_9_scaled": 0.144375,
+      "embedding_10_scaled": 0.091875,
+      "embedding_11_scaled": 0.1075,
+      "embedding_12_scaled": 0.060625,
+      "embedding_13_scaled": 0.15375,
+      "embedding_14_scaled": 0.1275,
+      "embedding_15_scaled": 0.070625,
+      "embedding_16_scaled": 0.099375,
+      "embedding_17_scaled": 0.095,
+      "embedding_18_scaled": 0.05,
+      "embedding_19_scaled": 0.113125,
+      "embedding_20_scaled": 0.059375,
+      "embedding_21_scaled": 0.12,
+      "embedding_22_scaled": 0.0975,
+      "embedding_23_scaled": 0.095,
+      "embedding_24_scaled": 0.053125,
+      "embedding_25_scaled": 0.075625,
+      "embedding_26_scaled": 0.105,
+      "embedding_27_scaled": 0.0925,
+      "embedding_28_scaled": 0.05125,
+      "embedding_29_scaled": 0.11125,
+      "embedding_30_scaled": 0.12875,
+      "embedding_31_scaled": 0.10625
+    },
+    "ks_pvalues": {
+      "mean_amplitude_scaled": 0.46727214685120533,
+      "std_amplitude_scaled": 0.5538353889573205,
+      "min_amplitude_scaled": 0.2243511064338043,
+      "max_amplitude_scaled": 0.5272100526887759,
+      "rms_amplitude_scaled": 0.5538353889573205,
+      "energy_scaled": 0.5538353889573205,
+      "zero_crossings_scaled": 0.20941593746122,
+      "dominant_frequency_scaled": 0.10999417234050628,
+      "embedding_0_scaled": 0.8379159963367588,
+      "embedding_1_scaled": 0.16110844699336996,
+      "embedding_2_scaled": 0.43460321698362303,
+      "embedding_3_scaled": 0.45898674470343426,
+      "embedding_4_scaled": 0.4756245567903554,
+      "embedding_5_scaled": 0.8139904703807133,
+      "embedding_6_scaled": 0.6173832496373535,
+      "embedding_7_scaled": 0.11592064267165647,
+      "embedding_8_scaled": 0.9958578208909414,
+      "embedding_9_scaled": 0.0751453255271282,
+      "embedding_10_scaled": 0.5097686455850464,
+      "embedding_11_scaled": 0.31771448613402486,
+      "embedding_12_scaled": 0.9247348627869343,
+      "embedding_13_scaled": 0.048652542041174446,
+      "embedding_14_scaled": 0.15335929805680706,
+      "embedding_15_scaled": 0.8139904703807133,
+      "embedding_16_scaled": 0.41095794433743454,
+      "embedding_17_scaled": 0.46727214685120533,
+      "embedding_18_scaled": 0.9857310236063428,
+      "embedding_19_scaled": 0.26231083034013125,
+      "embedding_20_scaled": 0.9350993077412441,
+      "embedding_21_scaled": 0.20460980553757152,
+      "embedding_22_scaled": 0.43460321698362303,
+      "embedding_23_scaled": 0.46727214685120533,
+      "embedding_24_scaled": 0.9740511982340169,
+      "embedding_25_scaled": 0.7453659814837982,
+      "embedding_26_scaled": 0.3447578086844227,
+      "embedding_27_scaled": 0.5011292105857219,
+      "embedding_28_scaled": 0.9816596758431764,
+      "embedding_29_scaled": 0.27994148329651625,
+      "embedding_30_scaled": 0.14591185937354148,
+      "embedding_31_scaled": 0.3310503486753104
+    },
+    "drift_detected": true,
+    "drift_severity": "low",
+    "num_features_tested": 40,
+    "significance_level": 0.05,
+    "drift_ratio": 0.025
+  },
+  "feature_importance_analysis": {
+    "important_features_drifted": [],
+    "top_features": [
+      {
+        "name": "embedding_29_scaled",
+        "importance": 0.14607015869443585,
+        "index": 37
+      },
+      {
+        "name": "embedding_0_scaled",
+        "importance": 0.10084535336163471,
+        "index": 8
+      },
+      {
+        "name": "dominant_frequency_scaled",
+        "importance": 0.08707279678668067,
+        "index": 7
+      },
+      {
+        "name": "embedding_22_scaled",
+        "importance": 0.0852606395599569,
+        "index": 30
+      },
+      {
+        "name": "embedding_7_scaled",
+        "importance": 0.07386382138228269,
+        "index": 15
+      },
+      {
+        "name": "embedding_25_scaled",
+        "importance": 0.07048904069680469,
+        "index": 33
+      },
+      {
+        "name": "embedding_21_scaled",
+        "importance": 0.06492281742804182,
+        "index": 29
+      },
+      {
+        "name": "embedding_5_scaled",
+        "importance": 0.06342426333632449,
+        "index": 13
+      },
+      {
+        "name": "embedding_12_scaled",
+        "importance": 0.06184098752685594,
+        "index": 20
+      },
+      {
+        "name": "embedding_26_scaled",
+        "importance": 0.06055695240941416,
+        "index": 34
+      }
+    ],
+    "drift_in_top_features": false
+  },
+  "llm_report": "**Evaluation Report**\n\n### Overall Performance Assessment\n\nThe model's overall performance is **fair**. The accuracy of 0.49 indicates that the model correctly classifies seismic traces about half the time, which is not satisfactory for a classification task. The macro F1 score (0.3371) and weighted F1 score (0.4354) also suggest room for improvement.\n\n### Drift Analysis\n\nThe model has detected drift in one feature out of 40, with a severity level of \"low\". However, the impact on model reliability is unknown due to the lack of explicit metrics (e.g., accuracy degradation). It's essential to investigate and understand the implications of this drift on the model's performance.\n\n### Top 3 Recommendations for Improvement\n\n1. **Collect more data**: Increase the dataset size to improve model generalizability and robustness.\n2. **Feature engineering**: Analyze and engineer new features that capture relevant seismic characteristics, potentially improving classification accuracy.\n3. **Hyperparameter tuning**: Perform hyperparameter optimization to fine-tune the model's performance on the existing dataset.\n\n### Production Readiness Assessment\n\nThe model is currently **not ready** for production due to its fair performance and potential drift issues. Further investigation and improvement are necessary before deploying it in a real-world setting.\n\nRecommendations should be implemented, and the model re-evaluated to assess its readiness for production.",
+  "data_split": {
+    "train_samples": 320,
+    "val_samples": 80,
+    "test_samples": 100,
+    "total_samples": 500
+  },
+  "model_info": {
+    "num_features": 40,
+    "feature_names": [
+      "mean_amplitude_scaled",
+      "std_amplitude_scaled",
+      "min_amplitude_scaled",
+      "max_amplitude_scaled",
+      "rms_amplitude_scaled",
+      "energy_scaled",
+      "zero_crossings_scaled",
+      "dominant_frequency_scaled",
+      "embedding_0_scaled",
+      "embedding_1_scaled",
+      "..."
+    ]
+  }
+}

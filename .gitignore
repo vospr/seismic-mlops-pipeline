@@ -1,0 +1,103 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.bak
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+Temp/f3_dataset.sgy
+Temp/*.json
+
+# Large data files (keep structure, ignore large files)
+data/raw/*.sgy
+data/bronze/seismic_data/*.parquet
+data/silver/seismic_features/*.parquet
+*.parquet
+
+# Keep sample/small files
+!data/raw/dataset_metadata.json
+!data/bronze/validation_results.json
+!data/silver/feature_summary.json
+!data/gold/evaluation_results.json
+!data/gold/monitoring_report.json
+
+# MLflow (keep structure)
+mlruns/
+
+# Models (keep metadata, ignore large pkl files)
+models/*.pkl
+models/SeismicClassifier_v*/model.pkl
+models/SeismicClassifier_v*/feature_scaler.pkl
+
+# Keep model metadata
+!models/hyperparameter_tuning_results.json
+!models/seismic_classifier_features.json
+!models/SeismicClassifier_v*/metadata.json
+
+# Feature store
+feature_store/*.db
+feature_store/data/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+credentials.json
+
+# CI/CD results (generated)
+cicd_results.json

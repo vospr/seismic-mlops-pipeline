@@ -1,0 +1,96 @@
+{
+  "metrics": {
+    "accuracy": 0.47,
+    "precision_macro": 0.38462709284627095,
+    "precision_weighted": 0.43768493150684923,
+    "recall_macro": 0.3591372330029317,
+    "recall_weighted": 0.47,
+    "f1_macro": 0.3517380254154448,
+    "f1_weighted": 0.43294885630498536,
+    "precision_normal": 0.5205479452054794,
+    "recall_normal": 0.7307692307692307,
+    "f1_normal": 0.608,
+    "precision_anomaly": 0.4666666666666667,
+    "recall_anomaly": 0.2413793103448276,
+    "f1_anomaly": 0.3181818181818182,
+    "precision_boundary": 0.16666666666666666,
+    "recall_boundary": 0.10526315789473684,
+    "f1_boundary": 0.12903225806451613,
+    "roc_auc_macro": 0.47849268469569733,
+    "confusion_matrix": [
+      [
+        38,
+        6,
+        8
+      ],
+      [
+        20,
+        7,
+        2
+      ],
+      [
+        15,
+        2,
+        2
+      ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 0.5205479452054794,
+        "recall": 0.7307692307692307,
+        "f1-score": 0.608,
+        "support": 52.0
+      },
+      "1": {
+        "precision": 0.4666666666666667,
+        "recall": 0.2413793103448276,
+        "f1-score": 0.3181818181818182,
+        "support": 29.0
+      },
+      "2": {
+        "precision": 0.16666666666666666,
+        "recall": 0.10526315789473684,
+        "f1-score": 0.12903225806451613,
+        "support": 19.0
+      },
+      "accuracy": 0.47,
+      "macro avg": {
+        "precision": 0.38462709284627095,
+        "recall": 0.3591372330029317,
+        "f1-score": 0.3517380254154448,
+        "support": 100.0
+      },
+      "weighted avg": {
+        "precision": 0.43768493150684923,
+        "recall": 0.47,
+        "f1-score": 0.43294885630498536,
+        "support": 100.0
+      }
+    }
+  },
+  "drift_detection": {
+    "features_drifted": [],
+    "ks_statistics": {
+      "feature_0": 0.0975,
+      "feature_1": 0.0675,
+      "feature_2": 0.07,
+      "feature_3": 0.08,
+      "feature_4": 0.0675,
+      "feature_5": 0.0675,
+      "feature_6": 0.095,
+      "feature_7": 0.08
+    },
+    "ks_pvalues": {
+      "feature_0": 0.41724457668774784,
+      "feature_1": 0.8455840063098947,
+      "feature_2": 0.8131232081337524,
+      "feature_3": 0.6680388163468287,
+      "feature_4": 0.8455840063098947,
+      "feature_5": 0.8455840063098947,
+      "feature_6": 0.450009844951224,
+      "feature_7": 0.6680388163468287
+    },
+    "drift_detected": false
+  },
+  "llm_report": null
+}

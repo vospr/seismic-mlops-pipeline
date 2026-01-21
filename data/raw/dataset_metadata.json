@@ -1,0 +1,56 @@
+{
+  "num_files": 5,
+  "num_traces_per_file": 100,
+  "total_traces": 500,
+  "num_samples": 462,
+  "sample_rate_ms": 4.0,
+  "classes": [
+    "normal",
+    "anomaly",
+    "boundary"
+  ],
+  "source": "Temp\\f3_dataset.sgy",
+  "sampling_ratio": "0.08%",
+  "files": {
+    "data\\raw\\synthetic_seismic_000.sgy": {
+      "num_traces": 100,
+      "class_distribution": {
+        "normal": 51,
+        "anomaly": 29,
+        "boundary": 20
+      }
+    },
+    "data\\raw\\synthetic_seismic_001.sgy": {
+      "num_traces": 100,
+      "class_distribution": {
+        "normal": 51,
+        "anomaly": 29,
+        "boundary": 20
+      }
+    },
+    "data\\raw\\synthetic_seismic_002.sgy": {
+      "num_traces": 100,
+      "class_distribution": {
+        "normal": 51,
+        "anomaly": 29,
+        "boundary": 20
+      }
+    },
+    "data\\raw\\synthetic_seismic_003.sgy": {
+      "num_traces": 100,
+      "class_distribution": {
+        "normal": 51,
+        "anomaly": 29,
+        "boundary": 20
+      }
+    },
+    "data\\raw\\synthetic_seismic_004.sgy": {
+      "num_traces": 100,
+      "class_distribution": {
+        "normal": 51,
+        "anomaly": 29,
+        "boundary": 20
+      }
+    }
+  }
+}

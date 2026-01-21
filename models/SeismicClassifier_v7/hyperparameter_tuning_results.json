@@ -1,0 +1,428 @@
+{
+  "all_results": {
+    "RandomForest": {
+      "model_type": "RandomForest",
+      "best_params": {
+        "n_estimators": 182,
+        "max_depth": 20,
+        "min_samples_split": 16,
+        "min_samples_leaf": 9,
+        "max_features": null,
+        "class_weight": "balanced_subsample"
+      },
+      "best_cv_score": 0.4065977245680325,
+      "n_trials": 30,
+      "cv_folds": 5,
+      "sampler": "TPE",
+      "optimization_history": [
+        {
+          "trial": 0,
+          "value": 0.3841477246610137
+        },
+        {
+          "trial": 1,
+          "value": 0.37022629023531667
+        },
+        {
+          "trial": 2,
+          "value": 0.36350289948284764
+        },
+        {
+          "trial": 3,
+          "value": 0.36290297367929586
+        },
+        {
+          "trial": 4,
+          "value": 0.3907468635698752
+        },
+        {
+          "trial": 5,
+          "value": 0.36563996371405316
+        },
+        {
+          "trial": 6,
+          "value": 0.3619483468509822
+        },
+        {
+          "trial": 7,
+          "value": 0.4013129723953647
+        },
+        {
+          "trial": 8,
+          "value": 0.3855165344954671
+        },
+        {
+          "trial": 9,
+          "value": 0.38967311625976164
+        },
+        {
+          "trial": 10,
+          "value": 0.37335619333590186
+        },
+        {
+          "trial": 11,
+          "value": 0.3844869620255341
+        },
+        {
+          "trial": 12,
+          "value": 0.3716871196754517
+        },
+        {
+          "trial": 13,
+          "value": 0.364112982996417
+        },
+        {
+          "trial": 14,
+          "value": 0.3794231756329112
+        },
+        {
+          "trial": 15,
+          "value": 0.3647038297592582
+        },
+        {
+          "trial": 16,
+          "value": 0.38716622616839486
+        },
+        {
+          "trial": 17,
+          "value": 0.37798162864148316
+        },
+        {
+          "trial": 18,
+          "value": 0.37665570450947755
+        },
+        {
+          "trial": 19,
+          "value": 0.3933996998291031
+        },
+        {
+          "trial": 20,
+          "value": 0.37188894798818584
+        },
+        {
+          "trial": 21,
+          "value": 0.3798729887843052
+        },
+        {
+          "trial": 22,
+          "value": 0.3986027856044373
+        },
+        {
+          "trial": 23,
+          "value": 0.3971379367935603
+        },
+        {
+          "trial": 24,
+          "value": 0.4065977245680325
+        },
+        {
+          "trial": 25,
+          "value": 0.38302421487700766
+        },
+        {
+          "trial": 26,
+          "value": 0.384492842854278
+        },
+        {
+          "trial": 27,
+          "value": 0.3735242097325931
+        },
+        {
+          "trial": 28,
+          "value": 0.3737869703940255
+        },
+        {
+          "trial": 29,
+          "value": 0.36720589993071273
+        }
+      ]
+    },
+    "GradientBoosting": {
+      "model_type": "GradientBoosting",
+      "best_params": {
+        "n_estimators": 85,
+        "max_depth": 2,
+        "learning_rate": 0.04541138894130161,
+        "min_samples_split": 13,
+        "min_samples_leaf": 2,
+        "subsample": 0.8025697734604504
+      },
+      "best_cv_score": 0.4106114033757512,
+      "n_trials": 30,
+      "cv_folds": 5,
+      "sampler": "TPE",
+      "optimization_history": [
+        {
+          "trial": 0,
+          "value": 0.3706035042658625
+        },
+        {
+          "trial": 1,
+          "value": 0.3799657494169325
+        },
+        {
+          "trial": 2,
+          "value": 0.3873325818203401
+        },
+        {
+          "trial": 3,
+          "value": 0.3631860874841536
+        },
+        {
+          "trial": 4,
+          "value": 0.3714035234561368
+        },
+        {
+          "trial": 5,
+          "value": 0.3753025215142178
+        },
+        {
+          "trial": 6,
+          "value": 0.39208513779739385
+        },
+        {
+          "trial": 7,
+          "value": 0.3917594420841688
+        },
+        {
+          "trial": 8,
+          "value": 0.35969077269303706
+        },
+        {
+          "trial": 9,
+          "value": 0.3734023273929485
+        },
+        {
+          "trial": 10,
+          "value": 0.35267422774706647
+        },
+        {
+          "trial": 11,
+          "value": 0.37906585616620714
+        },
+        {
+          "trial": 12,
+          "value": 0.3801692451275468
+        },
+        {
+          "trial": 13,
+          "value": 0.3938551987831448
+        },
+        {
+          "trial": 14,
+          "value": 0.3810910402715294
+        },
+        {
+          "trial": 15,
+          "value": 0.38534306789584966
+        },
+        {
+          "trial": 16,
+          "value": 0.3821371875196761
+        },
+        {
+          "trial": 17,
+          "value": 0.3882380723846066
+        },
+        {
+          "trial": 18,
+          "value": 0.35054652625559746
+        },
+        {
+          "trial": 19,
+          "value": 0.3480860832242695
+        },
+        {
+          "trial": 20,
+          "value": 0.39484953298047154
+        },
+        {
+          "trial": 21,
+          "value": 0.3704325202406694
+        },
+        {
+          "trial": 22,
+          "value": 0.3821126058626883
+        },
+        {
+          "trial": 23,
+          "value": 0.3766985404997825
+        },
+        {
+          "trial": 24,
+          "value": 0.4106114033757512
+        },
+        {
+          "trial": 25,
+          "value": 0.395170706436751
+        },
+        {
+          "trial": 26,
+          "value": 0.38157394318788107
+        },
+        {
+          "trial": 27,
+          "value": 0.36384332106986145
+        },
+        {
+          "trial": 28,
+          "value": 0.3494150966802537
+        },
+        {
+          "trial": 29,
+          "value": 0.39948130991349073
+        }
+      ]
+    },
+    "LogisticRegression": {
+      "model_type": "LogisticRegression",
+      "best_params": {
+        "C": 0.3690975005102551,
+        "penalty": "l1",
+        "class_weight": null
+      },
+      "best_cv_score": 0.42180757254035817,
+      "n_trials": 30,
+      "cv_folds": 5,
+      "sampler": "TPE",
+      "optimization_history": [
+        {
+          "trial": 0,
+          "value": 0.3527022777408065
+        },
+        {
+          "trial": 1,
+          "value": 0.3862260507728005
+        },
+        {
+          "trial": 2,
+          "value": 0.21939764337712933
+        },
+        {
+          "trial": 3,
+          "value": 0.35032383048698723
+        },
+        {
+          "trial": 4,
+          "value": 0.3855597600498916
+        },
+        {
+          "trial": 5,
+          "value": 0.35671088437244153
+        },
+        {
+          "trial": 6,
+          "value": 0.394341270779895
+        },
+        {
+          "trial": 7,
+          "value": 0.35889854033359725
+        },
+        {
+          "trial": 8,
+          "value": 0.21939764337712933
+        },
+        {
+          "trial": 9,
+          "value": 0.3648239224093769
+        },
+        {
+          "trial": 10,
+          "value": 0.4156613716843019
+        },
+        {
+          "trial": 11,
+          "value": 0.41779785060109864
+        },
+        {
+          "trial": 12,
+          "value": 0.3543945928887019
+        },
+        {
+          "trial": 13,
+          "value": 0.38665856343391175
+        },
+        {
+          "trial": 14,
+          "value": 0.38665856343391175
+        },
+        {
+          "trial": 15,
+          "value": 0.42180757254035817
+        },
+        {
+          "trial": 16,
+          "value": 0.3543945928887019
+        },
+        {
+          "trial": 17,
+          "value": 0.4051791537053697
+        },
+        {
+          "trial": 18,
+          "value": 0.4162242068035772
+        },
+        {
+          "trial": 19,
+          "value": 0.3543945928887019
+        },
+        {
+          "trial": 20,
+          "value": 0.3675568030581763
+        },
+        {
+          "trial": 21,
+          "value": 0.4166072713197062
+        },
+        {
+          "trial": 22,
+          "value": 0.40512086548351345
+        },
+        {
+          "trial": 23,
+          "value": 0.3543945928887019
+        },
+        {
+          "trial": 24,
+          "value": 0.39282569270181694
+        },
+        {
+          "trial": 25,
+          "value": 0.394981805380878
+        },
+        {
+          "trial": 26,
+          "value": 0.3809684916343809
+        },
+        {
+          "trial": 27,
+          "value": 0.38556072531714547
+        },
+        {
+          "trial": 28,
+          "value": 0.4111867149614863
+        },
+        {
+          "trial": 29,
+          "value": 0.34913886200722033
+        }
+      ]
+    }
+  },
+  "best_model_type": "LogisticRegression",
+  "best_cv_score": 0.42180757254035817,
+  "best_params": {
+    "C": 0.3690975005102551,
+    "penalty": "l1",
+    "class_weight": null
+  },
+  "final_metrics": {
+    "train_accuracy": 0.5625,
+    "train_f1_weighted": 0.49330298832376807,
+    "val_accuracy": 0.375,
+    "val_f1_weighted": 0.32344362745098043,
+    "test_accuracy": 0.49,
+    "test_f1_weighted": 0.43537096774193534
+  },
+  "llm_insights": "**1. Reasonableness of Optimized Hyperparameters**\n\nThe optimized hyperparameters seem reasonable, with a moderate value of `C` (0.369) and the use of L1 regularization (`penalty=\"l1\"`). The absence of class weights suggests that the model is not overemphasizing any particular class, which could be beneficial for imbalanced datasets.\n\n**2. Insights from Parameter Values**\n\nThe relatively low value of `C` indicates a strong emphasis on regularization, suggesting that the model is prone to overfitting and needs to be regularized heavily. The use of L1 regularization (`penalty=\"l1\"`) implies that the model is trying to reduce the magnitude of coefficients, which can lead to sparse solutions.\n\n**3. Recommendations for Further Improvement**\n\nTo further improve the model's performance, consider:\n* Increasing `C` to see if it improves the model's ability to generalize.\n* Experimenting with other regularization techniques (e.g., L2) or different types of regularization (e.g., dropout).\n* Investigating whether class weights are necessary and could potentially improve the model's performance on imbalanced classes."
+}

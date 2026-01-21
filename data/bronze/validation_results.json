@@ -1,0 +1,16 @@
+{
+  "total_traces": 500,
+  "total_files": 5,
+  "missing_trace_data": "0",
+  "missing_coordinates": "0",
+  "sample_rate_consistency": true,
+  "num_samples_consistency": true,
+  "class_label_distribution": {
+    "0": 260,
+    "1": 146,
+    "2": 94
+  },
+  "anomalies": [],
+  "validation_passed": true,
+  "llm_analysis_available": true
+}

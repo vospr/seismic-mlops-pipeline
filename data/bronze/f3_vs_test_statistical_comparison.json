@@ -1,0 +1,152 @@
+{
+  "f3_results": {
+    "file": "Temp\\f3_dataset.sgy",
+    "total_traces": 600515,
+    "samples_per_trace": 462,
+    "sample_rate_ms": 4.0,
+    "trace_statistics": {
+      "mean_of_means": -1.8147880952380955,
+      "std_of_means": 17.927804755702354,
+      "mean_of_stds": 2480.082228027388,
+      "std_of_stds": 162.83055367112146,
+      "overall_min": -29974.0,
+      "overall_max": 30311.0,
+      "sample_size": 10000
+    },
+    "normal_distribution_tests": {
+      "dagostino_pearson": {
+        "statistic": 143.82658176732357,
+        "p_value": 5.867520204211492e-32,
+        "is_normal": "False"
+      },
+      "jarque_bera": {
+        "statistic": 262.12971851569307,
+        "p_value": 1.2002034004604208e-57,
+        "is_normal": "False"
+      }
+    },
+    "class_distribution": {
+      "counts": {
+        "0": 5106,
+        "1": 2972,
+        "2": 1922
+      },
+      "percentages": {
+        "0": 51.06,
+        "1": 29.72,
+        "2": 19.22
+      },
+      "total": 10000
+    },
+    "balance_score": 0.9291693225584282
+  },
+  "test_results": {
+    "file": "data\\bronze\\seismic_data.parquet",
+    "total_traces": 500,
+    "samples_per_trace": 462,
+    "sample_rate_ms": 4.0,
+    "trace_statistics": {
+      "mean_of_means": -2.1825281385281388,
+      "std_of_means": 18.07148552095097,
+      "mean_of_stds": 2471.9019096538073,
+      "std_of_stds": 196.86814288046173,
+      "overall_min": -26048.0,
+      "overall_max": 28127.0,
+      "sample_size": 500
+    },
+    "normal_distribution_tests": {
+      "shapiro_wilk": {
+        "statistic": 0.9874710666392563,
+        "p_value": 0.000272022594613076,
+        "is_normal": "False"
+      },
+      "dagostino_pearson": {
+        "statistic": 15.892166883788612,
+        "p_value": 0.00035404609484018904,
+        "is_normal": "False"
+      },
+      "jarque_bera": {
+        "statistic": 32.8006226496331,
+        "p_value": 7.54111024958724e-08,
+        "is_normal": "False"
+      }
+    },
+    "class_distribution": {
+      "counts": {
+        "0": 260,
+        "1": 146,
+        "2": 94
+      },
+      "percentages": {
+        "0": 52.0,
+        "1": 29.2,
+        "2": 18.8
+      },
+      "total": 500
+    },
+    "balance_score": 0.9227105031907769
+  },
+  "comparison": {
+    "trace_statistics": {
+      "mean_of_means": {
+        "f3": -1.8147880952380955,
+        "test": -2.1825281385281388,
+        "difference": -0.3677400432900433,
+        "relative_diff_pct": -20.263525215697246
+      },
+      "mean_of_stds": {
+        "f3": 2480.082228027388,
+        "test": 2471.9019096538073,
+        "difference": -8.180318373580576,
+        "relative_diff_pct": -0.3298406109738971
+      }
+    },
+    "normal_distribution": {
+      "dagostino_pearson": {
+        "f3": {
+          "is_normal": "False",
+          "p_value": 5.867520204211492e-32
+        },
+        "test": {
+          "is_normal": "False",
+          "p_value": 0.00035404609484018904
+        },
+        "agreement": "True"
+      },
+      "jarque_bera": {
+        "f3": {
+          "is_normal": "False",
+          "p_value": 1.2002034004604208e-57
+        },
+        "test": {
+          "is_normal": "False",
+          "p_value": 7.54111024958724e-08
+        },
+        "agreement": "True"
+      }
+    },
+    "class_distribution": {
+      "Normal": {
+        "f3_percentage": 51.06,
+        "test_percentage": 52.0,
+        "difference": 0.9399999999999977
+      },
+      "Anomaly": {
+        "f3_percentage": 29.72,
+        "test_percentage": 29.2,
+        "difference": -0.5199999999999996
+      },
+      "Boundary": {
+        "f3_percentage": 19.22,
+        "test_percentage": 18.8,
+        "difference": -0.41999999999999815
+      }
+    },
+    "balance_score": {
+      "f3": 0.9291693225584282,
+      "test": 0.9227105031907769,
+      "difference": -0.006458819367651358
+    }
+  },
+  "timestamp": "2026-01-20T20:00:10.335107"
+}

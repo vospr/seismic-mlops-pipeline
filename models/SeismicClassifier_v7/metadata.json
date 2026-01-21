@@ -1,0 +1,27 @@
+{
+  "model_name": "SeismicClassifier",
+  "version": 7,
+  "timestamp": "2026-01-21T10:56:54.317299",
+  "artifacts": [
+    "model.pkl",
+    "model_features.json",
+    "feature_scaler.pkl",
+    "evaluation_results.json",
+    "hyperparameter_tuning_results.json"
+  ],
+  "num_features": 40,
+  "feature_types": {
+    "handcrafted": 8,
+    "embeddings": 32
+  },
+  "hyperparameter_tuning": {
+    "method": "Optuna TPE",
+    "best_model_type": "LogisticRegression",
+    "best_cv_score": 0.42180757254035817,
+    "best_params": {
+      "C": 0.3690975005102551,
+      "penalty": "l1",
+      "class_weight": null
+    }
+  }
+}
