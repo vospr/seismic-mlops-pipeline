@@ -1,5 +1,7 @@
 # MLOps Engineer - Project Description
 
+> **Repository:** [https://github.com/vospr/seismic-mlops-pipeline](https://github.com/vospr/seismic-mlops-pipeline)
+
 ## Role Overview
 
 We are seeking a mid-level MLOps Engineer to design, implement, and operate the machine learning platform that powers several initiatives:
