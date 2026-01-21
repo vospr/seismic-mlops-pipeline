@@ -17,6 +17,42 @@ Seismic data analysis requires automated classification of geological formations
 - **Production-ready deployment** - REST API and batch inference capabilities
 - **Environment isolation** - Separate dev/staging/production workflows
 
+### Data Source & Volume
+
+| Attribute | Value |
+|-----------|-------|
+| **Source Dataset** | F3 Netherlands North Sea Survey (public domain) |
+| **Original Format** | SGY/SEGY (industry-standard seismic format) |
+| **Full Dataset Size** | ~600,000 traces |
+| **Sample Used** | 500 traces (random sampling for demonstration) |
+| **Trace Length** | 462 samples per trace |
+| **Sample Rate** | 4ms |
+| **Data Split** | 64% train / 16% validation / 20% test |
+
+> **Note:** The limited sample size (500 traces) is intentional for demonstration purposes. The architecture supports scaling to full production volumes with infrastructure changes outlined in the [Limitations](#limitations-for-big-data-production) section.
+
+### ML Model & Prediction Task
+
+| Attribute | Value |
+|-----------|-------|
+| **Task Type** | Multi-class Classification |
+| **Target Classes** | 3 classes: Normal (0), Anomaly (1), Boundary (2) |
+| **Class Distribution** | 50% Normal, 30% Anomaly, 20% Boundary |
+| **Model Type** | LogisticRegression (selected via Optuna TPE) |
+| **Input Features** | 40 features (8 handcrafted + 32 PCA embeddings) |
+| **Optimization** | Bayesian hyperparameter tuning (TPE sampler) |
+
+**Prediction Results (Current Model):**
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Accuracy | ~49% | Limited by small sample size |
+| F1-Score (weighted) | ~44% | Class imbalance handled |
+| ROC-AUC (macro) | ~53% | Above random baseline |
+| Drift Detection | Low | <3% features drifted |
+
+> **Expected Improvement:** With full dataset (600K+ traces), model accuracy is expected to exceed 85% due to better representation of geological patterns.
+
 ### Key Deliverables
 
 | Deliverable | Description |
@@ -31,54 +67,124 @@ Seismic data analysis requires automated classification of geological formations
 
 ## Solution Architecture
 
+### MLOps Process Framework
+
+This architecture follows the **Databricks MLOps Process** framework, organizing the pipeline into four core process areas:
+
+```mermaid
+flowchart TB
+    subgraph MLOpsProcess["MLOps Process Framework"]
+        direction TB
+        
+        subgraph DM["1. DATA MANAGEMENT"]
+            DM1["Data Ingestion & Validation"]
+            DM2["Feature Engineering"]
+            DM3["Feature Store"]
+            DM4["Data Versioning (Delta Lake)"]
+        end
+        
+        subgraph MD["2. MODEL DEVELOPMENT"]
+            MD1["Experiment Tracking"]
+            MD2["Hyperparameter Tuning"]
+            MD3["Model Training"]
+            MD4["Model Validation"]
+        end
+        
+        subgraph DP["3. MODEL DEPLOYMENT"]
+            DP1["Model Registry"]
+            DP2["Stage Transitions"]
+            DP3["Serving (API/Batch)"]
+            DP4["Environment Separation"]
+        end
+        
+        subgraph MO["4. MONITORING"]
+            MO1["Performance Metrics"]
+            MO2["Drift Detection"]
+            MO3["Alerting"]
+            MO4["Retraining Triggers"]
+        end
+    end
+    
+    DM --> MD --> DP --> MO
+    MO -.->|"Feedback Loop"| DM
+    
+    style DM fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style MD fill:#e8e8e8,stroke:#333,stroke-width:2px
+    style DP fill:#d9d9d9,stroke:#333,stroke-width:2px
+    style MO fill:#cccccc,stroke:#333,stroke-width:2px
+```
+
+### MLOps Process to Pipeline Stage Mapping
+
+| MLOps Process | Pipeline Stages | Key Activities |
+|---------------|-----------------|----------------|
+| **1. Data Management** | Stage 0, 1, 2 | Data ingestion, quality validation, feature engineering, Delta Lake storage |
+| **2. Model Development** | Stage 3, 3b, 4 | Experiment tracking, hyperparameter tuning (Optuna TPE), model training, evaluation |
+| **3. Model Deployment** | Stage 5, 6 | Model registry, versioning, stage transitions, REST API & batch serving |
+| **4. Monitoring** | Stage 7, 8 | Drift detection, Prometheus metrics, CI/CD automation, alerting |
+
 ### High-Level Pipeline Flow
 
 ```mermaid
 flowchart TB
-    subgraph DataLayer["Data Layer"]
-        F3[("F3 Dataset<br/>SGY/SEGY")]
-        RAW[("Raw Data<br/>data/raw/")]
-        BRONZE[("Bronze Layer<br/>Delta Lake")]
-        SILVER[("Silver Layer<br/>Features")]
-        GOLD[("Gold Layer<br/>Predictions")]
+    subgraph DataManagement["1. DATA MANAGEMENT"]
+        subgraph DataLayer["Data Layer (Medallion Architecture)"]
+            F3[("F3 Dataset<br/>SGY/SEGY")]
+            RAW[("Raw Layer<br/>data/raw/")]
+            BRONZE[("Bronze Layer<br/>Delta Lake")]
+            SILVER[("Silver Layer<br/>Features")]
+            GOLD[("Gold Layer<br/>Predictions")]
+        end
+        
+        subgraph DataStages["Data Processing Stages"]
+            S0["Stage 0<br/>Data Sampling"]
+            S1["Stage 1<br/>Data Ingestion"]
+            S2["Stage 2<br/>Feature Engineering"]
+        end
     end
     
-    subgraph ProcessingStages["Processing Stages"]
-        S0["Stage 0<br/>Data Sampling"]
-        S1["Stage 1<br/>Data Ingestion"]
-        S2["Stage 2<br/>Feature Engineering"]
+    subgraph ModelDevelopment["2. MODEL DEVELOPMENT"]
         S3["Stage 3<br/>Model Training"]
+        S3b["Stage 3b<br/>Hyperparameter Tuning"]
         S4["Stage 4<br/>Evaluation"]
     end
     
-    subgraph MLOpsComponents["MLOps Components"]
+    subgraph ModelDeployment["3. MODEL DEPLOYMENT"]
         S5["Stage 5<br/>Model Registry"]
-        S6["Stage 6<br/>Deployment"]
+        S6["Stage 6<br/>Serving"]
+    end
+    
+    subgraph Monitoring["4. MONITORING"]
         S7["Stage 7<br/>Monitoring"]
         S8["Stage 8<br/>CI/CD"]
     end
     
     subgraph SupportingSystems["Supporting Systems"]
-        MLFLOW[("MLflow<br/>Experiment Tracking")]
+        MLFLOW[("MLflow<br/>Tracking & Registry")]
         FEAST[("Feast<br/>Feature Store")]
         OLLAMA[("Ollama<br/>LLM Analysis")]
         PROM[("Prometheus<br/>Metrics")]
     end
     
-    F3 --> S0 --> RAW --> S1 --> BRONZE --> S2 --> SILVER --> S3 --> S4 --> GOLD
-    S3 --> S5 --> S6 --> S7 --> S8
+    F3 --> S0 --> RAW --> S1 --> BRONZE --> S2 --> SILVER
+    SILVER --> S3 --> S3b --> S4 --> GOLD
+    S4 --> S5 --> S6 --> S7 --> S8
     
     S1 -.-> OLLAMA
     S2 -.-> FEAST
     S3 -.-> MLFLOW
+    S3b -.-> MLFLOW
     S4 -.-> OLLAMA
     S5 -.-> MLFLOW
     S7 -.-> PROM
     
-    style DataLayer fill:#f5f5f5,stroke:#333
-    style ProcessingStages fill:#e8e8e8,stroke:#333
-    style MLOpsComponents fill:#d9d9d9,stroke:#333
-    style SupportingSystems fill:#cccccc,stroke:#333
+    S8 -.->|"Feedback Loop"| S0
+    
+    style DataManagement fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style ModelDevelopment fill:#e8e8e8,stroke:#333,stroke-width:2px
+    style ModelDeployment fill:#d9d9d9,stroke:#333,stroke-width:2px
+    style Monitoring fill:#cccccc,stroke:#333,stroke-width:2px
+    style SupportingSystems fill:#bfbfbf,stroke:#333
 ```
 
 ### Detailed Stage Architecture
