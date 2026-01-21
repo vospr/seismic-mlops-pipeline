@@ -1,0 +1,113 @@
+# Seismic MLOps Pipeline - PRODUCTION Environment
+# 
+# "Deploy Code Not Models" - Same code, production-specific config
+# 
+# Usage:
+#   docker-compose -f docker-compose.prod.yml up -d
+#   docker-compose -f docker-compose.prod.yml exec mlops python run_all_stages.py
+
+services:
+  # Main MLOps Pipeline Service - PRODUCTION
+  mlops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seismic-mlops-prod
+    ports:
+      - "8000:8000"   # FastAPI
+      - "8001:8001"   # Prometheus metrics
+    volumes:
+      - prod-data:/app/data
+      - prod-models:/app/models
+      - prod-mlruns:/app/mlruns
+      - prod-feature-store:/app/feature_store
+      # NOTE: Source code is BAKED into image, not mounted
+      # This ensures immutable deployments
+    environment:
+      - ENVIRONMENT=production
+      - PYTHONUNBUFFERED=1
+      - MLFLOW_TRACKING_URI=http://mlflow-prod:5000
+      - MLFLOW_EXPERIMENT_NAME=seismic_classification_prod
+      - LOG_LEVEL=WARNING
+      - ENABLE_PROMETHEUS=true
+      - ENABLE_LLM=false  # Disabled for cost in prod
+      # Alerting (set in .env.prod)
+      - SLACK_WEBHOOK_PROD=${SLACK_WEBHOOK_PROD}
+      - ALERT_EMAIL_PROD=${ALERT_EMAIL_PROD}
+    deploy:
+      replicas: 2  # Multiple replicas for HA
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mlops-prod-network
+    depends_on:
+      - mlflow-prod
+
+  # MLflow Tracking Server - PRODUCTION
+  mlflow-prod:
+    image: python:3.11-slim
+    container_name: seismic-mlflow-prod
+    ports:
+      - "5002:5000"  # Different port
+    volumes:
+      - prod-mlruns:/mlruns
+    command: >
+      bash -c "pip install mlflow && 
+               mlflow ui --host 0.0.0.0 --port 5000 --backend-store-uri file:///mlruns"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:5000\")' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - mlops-prod-network
+
+  # Load Balancer (nginx) - PRODUCTION
+  nginx:
+    image: nginx:alpine
+    container_name: seismic-nginx-prod
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - mlops
+    networks:
+      - mlops-prod-network
+    profiles:
+      - loadbalancer
+
+networks:
+  mlops-prod-network:
+    driver: bridge
+
+volumes:
+  prod-data:
+    driver: local
+  prod-models:
+    driver: local
+  prod-mlruns:
+    driver: local
+  prod-feature-store:
+    driver: local

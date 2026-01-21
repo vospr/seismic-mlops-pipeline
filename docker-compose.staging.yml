@@ -1,0 +1,93 @@
+# Seismic MLOps Pipeline - STAGING Environment
+# 
+# "Deploy Code Not Models" - Same code, staging-specific config
+# 
+# Usage:
+#   docker-compose -f docker-compose.staging.yml up -d
+#   docker-compose -f docker-compose.staging.yml exec mlops python run_all_stages.py
+
+services:
+  # Main MLOps Pipeline Service - STAGING
+  mlops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seismic-mlops-staging
+    ports:
+      - "8000:8000"   # FastAPI
+      - "8001:8001"   # Prometheus metrics
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - staging-mlruns:/app/mlruns  # Separate MLflow storage
+      - ./feature_store:/app/feature_store
+      - ./src:/app/src
+      - ./config:/app/config
+    environment:
+      - ENVIRONMENT=staging
+      - PYTHONUNBUFFERED=1
+      - MLFLOW_TRACKING_URI=http://mlflow-staging:5000
+      - MLFLOW_EXPERIMENT_NAME=seismic_classification_staging
+      - LOG_LEVEL=INFO
+      - ENABLE_PROMETHEUS=true
+      - ENABLE_LLM=true
+      # Alerting (set in .env.staging)
+      - SLACK_WEBHOOK_STAGING=${SLACK_WEBHOOK_STAGING}
+      - ALERT_EMAIL_STAGING=${ALERT_EMAIL_STAGING}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - mlops-staging-network
+    depends_on:
+      - mlflow-staging
+
+  # MLflow Tracking Server - STAGING
+  mlflow-staging:
+    image: python:3.11-slim
+    container_name: seismic-mlflow-staging
+    ports:
+      - "5001:5000"  # Different port to avoid conflict with dev
+    volumes:
+      - staging-mlruns:/mlruns
+    command: >
+      bash -c "pip install mlflow && 
+               mlflow ui --host 0.0.0.0 --port 5000 --backend-store-uri file:///mlruns"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:5000\")' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - mlops-staging-network
+
+  # Ollama LLM Service - STAGING (optional)
+  ollama-staging:
+    image: ollama/ollama:latest
+    container_name: seismic-ollama-staging
+    ports:
+      - "11435:11434"  # Different port
+    volumes:
+      - ollama-staging-data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+    networks:
+      - mlops-staging-network
+    profiles:
+      - llm
+
+networks:
+  mlops-staging-network:
+    driver: bridge
+
+volumes:
+  staging-mlruns:
+    driver: local
+  ollama-staging-data:
+    driver: local
