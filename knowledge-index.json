@@ -1,0 +1,307 @@
+{
+  "tool": "SCOR-MLOps",
+  "basePath": "C:\\Users\\AndreyPopov\\Documents\\Pipeline\\SCOR\\Test",
+  "lastUpdated": "2026-01-21T19:30:00.000Z",
+  "description": "Seismic MLOps Pipeline - Production-ready ML pipeline for seismic data classification",
+  "repository": "https://github.com/vospr/seismic-mlops-pipeline",
+  "modules": [
+    {
+      "id": "root",
+      "path": "",
+      "title": "Seismic MLOps Pipeline",
+      "description": "Complete 9-stage MLOps pipeline for seismic data classification with LLM integration",
+      "type": "project",
+      "learningObjectives": [
+        "Understand end-to-end MLOps pipeline architecture",
+        "Learn data processing with SGY/SEGY seismic files",
+        "Implement feature engineering with PCA embeddings",
+        "Use MLflow for experiment tracking and model registry",
+        "Deploy models with FastAPI REST API",
+        "Monitor models with drift detection"
+      ],
+      "prerequisites": [
+        "Python 3.10+",
+        "Docker Desktop",
+        "Basic ML knowledge"
+      ],
+      "keyFiles": [
+        {
+          "name": "PROJECT_DESCRIPTION.md",
+          "type": "doc",
+          "purpose": "Comprehensive project documentation with architecture diagrams"
+        },
+        {
+          "name": "QUICK_START.md",
+          "type": "doc",
+          "purpose": "Quick start guide for local and Docker deployment"
+        },
+        {
+          "name": "README.md",
+          "type": "doc",
+          "purpose": "Project overview and entry point"
+        },
+        {
+          "name": "Model_match_to_Engineer_Position.md",
+          "type": "doc",
+          "purpose": "Mapping of project features to MLOps Engineer job requirements"
+        },
+        {
+          "name": "requirements.txt",
+          "type": "config",
+          "purpose": "Python dependencies"
+        },
+        {
+          "name": "docker-compose.yml",
+          "type": "config",
+          "purpose": "Docker development environment"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["mlops", "seismic", "machine-learning", "fastapi", "mlflow", "docker"]
+    },
+    {
+      "id": "src-pipeline",
+      "path": "src",
+      "title": "Pipeline Stages",
+      "description": "9-stage ML pipeline implementation",
+      "type": "code",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "stage0_data_sampling.py",
+          "type": "code",
+          "purpose": "Stage 0: Data sampling from F3 dataset with KNN imputation"
+        },
+        {
+          "name": "stage1_data_ingestion.py",
+          "type": "code",
+          "purpose": "Stage 1: SGY/SEGY ingestion with Delta Lake storage"
+        },
+        {
+          "name": "stage2_feature_engineering.py",
+          "type": "code",
+          "purpose": "Stage 2: Feature extraction (8 handcrafted + 32 PCA embeddings)"
+        },
+        {
+          "name": "stage3_model_training.py",
+          "type": "code",
+          "purpose": "Stage 3: Model training with MLflow tracking"
+        },
+        {
+          "name": "stage3_hyperparameter_tuning.py",
+          "type": "code",
+          "purpose": "Stage 3b: Optuna TPE hyperparameter optimization"
+        },
+        {
+          "name": "stage4_model_evaluation.py",
+          "type": "code",
+          "purpose": "Stage 4: Model evaluation with drift detection"
+        },
+        {
+          "name": "stage5_model_registry.py",
+          "type": "code",
+          "purpose": "Stage 5: MLflow model registry and versioning"
+        },
+        {
+          "name": "stage6_model_deployment.py",
+          "type": "code",
+          "purpose": "Stage 6: FastAPI REST API and batch inference"
+        },
+        {
+          "name": "stage7_monitoring.py",
+          "type": "code",
+          "purpose": "Stage 7: Prometheus metrics and drift monitoring"
+        },
+        {
+          "name": "stage8_cicd.py",
+          "type": "code",
+          "purpose": "Stage 8: CI/CD automation and GitHub Actions"
+        },
+        {
+          "name": "ai_quality_agents.py",
+          "type": "code",
+          "purpose": "LLM-powered data quality agents"
+        },
+        {
+          "name": "rag_pipeline.py",
+          "type": "code",
+          "purpose": "RAG pipeline with TF-IDF and FAISS"
+        },
+        {
+          "name": "feature_store.py",
+          "type": "code",
+          "purpose": "Feast feature store integration"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["python", "sklearn", "mlflow", "fastapi", "optuna"]
+    },
+    {
+      "id": "config",
+      "path": "config",
+      "title": "Configuration",
+      "description": "Environment and deployment configuration",
+      "type": "config",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "environments.py",
+          "type": "code",
+          "purpose": "Environment-specific configurations (dev/staging/prod)"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["configuration", "environments"]
+    },
+    {
+      "id": "scripts",
+      "path": "scripts",
+      "title": "Deployment Scripts",
+      "description": "Automation scripts for deployment",
+      "type": "scripts",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "deploy.py",
+          "type": "code",
+          "purpose": "Deploy Code Not Models automation script"
+        },
+        {
+          "name": "docker-start.bat",
+          "type": "script",
+          "purpose": "Windows Docker startup script"
+        },
+        {
+          "name": "setup-local.bat",
+          "type": "script",
+          "purpose": "Windows local setup script"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["deployment", "docker", "automation"]
+    },
+    {
+      "id": "data-bronze",
+      "path": "data/bronze",
+      "title": "Bronze Layer",
+      "description": "Raw ingested data in Delta Lake format",
+      "type": "data",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "validation_results.json",
+          "type": "data",
+          "purpose": "Data quality validation results"
+        },
+        {
+          "name": "llm_schema_analysis.txt",
+          "type": "doc",
+          "purpose": "LLM-generated schema analysis"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["data", "delta-lake", "bronze"]
+    },
+    {
+      "id": "data-silver",
+      "path": "data/silver",
+      "title": "Silver Layer",
+      "description": "Processed features (40 features)",
+      "type": "data",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "feature_summary.json",
+          "type": "data",
+          "purpose": "Feature statistics and metadata"
+        },
+        {
+          "name": "feature_scaler.pkl",
+          "type": "model",
+          "purpose": "StandardScaler for feature normalization"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["data", "features", "silver"]
+    },
+    {
+      "id": "data-gold",
+      "path": "data/gold",
+      "title": "Gold Layer",
+      "description": "Model predictions and evaluation results",
+      "type": "data",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "evaluation_results.json",
+          "type": "data",
+          "purpose": "Model evaluation metrics and drift detection"
+        },
+        {
+          "name": "monitoring_report.json",
+          "type": "data",
+          "purpose": "Production monitoring report"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["data", "predictions", "gold"]
+    },
+    {
+      "id": "models",
+      "path": "models",
+      "title": "Model Artifacts",
+      "description": "Trained models and hyperparameter tuning results",
+      "type": "models",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "hyperparameter_tuning_results.json",
+          "type": "data",
+          "purpose": "Optuna TPE optimization results"
+        },
+        {
+          "name": "seismic_classifier_features.json",
+          "type": "data",
+          "purpose": "Feature names and metadata"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["models", "artifacts", "mlflow"]
+    },
+    {
+      "id": "feature-store",
+      "path": "feature_store",
+      "title": "Feature Store",
+      "description": "Feast feature store configuration",
+      "type": "config",
+      "learningObjectives": [],
+      "prerequisites": [],
+      "keyFiles": [
+        {
+          "name": "feature_store.yaml",
+          "type": "config",
+          "purpose": "Feast configuration"
+        },
+        {
+          "name": "feature_definitions.py",
+          "type": "code",
+          "purpose": "Feature view definitions"
+        },
+        {
+          "name": "feature_catalog.json",
+          "type": "data",
+          "purpose": "Feature catalog metadata"
+        }
+      ],
+      "scenarios": [],
+      "tags": ["feast", "feature-store"]
+    }
+  ]
+}
