@@ -1558,3 +1558,120 @@ docker-compose exec mlops python src/stage8_cicd.py
 | Containerization | Docker, Docker Compose |
 | CI/CD automation | Stage 8, GitHub Actions |
 | Monitoring/Observability | Stage 7 (Prometheus metrics) |
+| Deploy Code Not Models | Environment separation (dev/staging/prod) |
+
+---
+
+## Deploy Code Not Models - Environment Separation
+
+### Principle Overview
+
+**"Deploy Code Not Models"** means:
+- ✅ Deploy the **training code** to each environment
+- ✅ Each environment **trains its own model** using environment-specific data
+- ✅ Models are **registered in environment-specific MLflow** instances
+- ❌ Do NOT copy model files between environments
+- ❌ Do NOT share MLflow databases between environments
+
+### Why This Matters
+
+| Approach | Deploy Models | Deploy Code |
+|----------|--------------|-------------|
+| Reproducibility | ❌ Hard to reproduce | ✅ Fully reproducible |
+| Auditability | ❌ "Where did this model come from?" | ✅ Clear lineage |
+| Data governance | ❌ Prod data in dev? | ✅ Environment isolation |
+| Rollback | ❌ Which version? | ✅ Git commit = model version |
+| Testing | ❌ Test the artifact | ✅ Test the process |
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        Git Repository (Single Source)                    │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  src/stage0-8_*.py  │  config/  │  Dockerfile  │  requirements  │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │               │               │
+                    ▼               ▼               ▼
+┌─────────────────────┐ ┌─────────────────────┐ ┌─────────────────────┐
+│    DEVELOPMENT      │ │      STAGING        │ │     PRODUCTION      │
+├─────────────────────┤ ├─────────────────────┤ ├─────────────────────┤
+│ docker-compose.yml  │ │ docker-compose.     │ │ docker-compose.     │
+│                     │ │ staging.yml         │ │ prod.yml            │
+├─────────────────────┤ ├─────────────────────┤ ├─────────────────────┤
+│ ENVIRONMENT=dev     │ │ ENVIRONMENT=staging │ │ ENVIRONMENT=prod    │
+│ MLflow: localhost   │ │ MLflow: staging:5001│ │ MLflow: prod:5002   │
+│ Data: ./data        │ │ Data: staging-data  │ │ Data: prod-data     │
+├─────────────────────┤ ├─────────────────────┤ ├─────────────────────┤
+│  Train Model        │ │  Train Model        │ │  Train Model        │
+│  (dev data)         │ │  (staging data)     │ │  (prod data)        │
+│         ↓           │ │         ↓           │ │         ↓           │
+│  MLflow Experiment: │ │  MLflow Experiment: │ │  MLflow Experiment: │
+│  _dev               │ │  _staging           │ │  _prod              │
+│         ↓           │ │         ↓           │ │         ↓           │
+│  Model Stage: None  │ │  Model Stage:       │ │  Model Stage:       │
+│                     │ │  Staging            │ │  Production         │
+└─────────────────────┘ └─────────────────────┘ └─────────────────────┘
+```
+
+### Environment Files
+
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | Development environment |
+| `docker-compose.staging.yml` | Staging environment |
+| `docker-compose.prod.yml` | Production environment |
+| `config/environments.py` | Environment configurations |
+| `scripts/deploy.py` | Deployment automation |
+
+### Deployment Commands
+
+```bash
+# Development
+docker-compose up -d
+docker-compose exec mlops python run_all_stages.py
+
+# Staging
+docker-compose -f docker-compose.staging.yml up -d
+docker-compose -f docker-compose.staging.yml exec mlops python run_all_stages.py
+
+# Production
+docker-compose -f docker-compose.prod.yml up -d
+docker-compose -f docker-compose.prod.yml exec mlops python run_all_stages.py
+
+# Using deploy script
+python scripts/deploy.py --env staging
+python scripts/deploy.py --env production --skip-training
+```
+
+### Key Differences by Environment
+
+| Aspect | Development | Staging | Production |
+|--------|-------------|---------|------------|
+| **Compose file** | `docker-compose.yml` | `docker-compose.staging.yml` | `docker-compose.prod.yml` |
+| **MLflow port** | 5000 | 5001 | 5002 |
+| **Model stage** | None | Staging | Production |
+| **Replicas** | 1 | 1 | 2+ |
+| **Resource limits** | None | Soft | Hard |
+| **Log level** | DEBUG | INFO | WARNING |
+| **Source mount** | Yes (hot reload) | Yes | No (baked in) |
+
+### Model Promotion Flow
+
+```
+Development ──────▶ Staging ──────▶ Production
+(Stage: None)      (Stage: Staging)  (Stage: Production)
+     │                  │                  │
+     ▼                  ▼                  ▼
+Dev MLflow :5000   Staging MLflow :5001   Prod MLflow :5002
+```
+
+### Benefits
+
+1. **Reproducibility** - Any commit can be deployed to any environment
+2. **Auditability** - Git commit = model version with full MLflow tracking
+3. **Environment Isolation** - Dev data never touches production
+4. **Easy Rollback** - Just deploy previous commit
