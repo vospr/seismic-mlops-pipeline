@@ -21,12 +21,12 @@ try:
             time.sleep(0.5)
     else:
         raise SystemExit("API did not come up")
-    patches = ds.X_test[:20]
+    patches = ds.X_val[:20]
     req = urllib.request.Request(f"http://127.0.0.1:{PORT}/predict", data=json.dumps({"patches": patches.tolist()}).encode(),
                                  headers={"Content-Type": "application/json"})
     body = json.load(urllib.request.urlopen(req))
     assert len(body["facies"]) == 20 and all(0 <= f <= 5 for f in body["facies"]), body
-    acc = sum(int(a == b) for a, b in zip(body["facies"], ds.y_test[:20])) / 20
+    acc = sum(int(a == b) for a, b in zip(body["facies"], ds.y_val[:20])) / 20
     print(f"smoke ok: 20 patches served, agreement with true facies {acc:.2f}")
 finally:
     proc.terminate()
