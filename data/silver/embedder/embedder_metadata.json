@@ -1,6 +1,0 @@
-{
-  "input_dim": 462,
-  "embedding_dim": 32,
-  "method": "pca",
-  "is_trained": true
-}
