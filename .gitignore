@@ -101,3 +101,8 @@ credentials.json
 
 # CI/CD results (generated)
 cicd_results.json
+
+# redo-2026-10
+mlflow.db
+data/f3/
+.venv/

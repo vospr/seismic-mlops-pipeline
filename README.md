@@ -1,245 +1,118 @@
-# Seismic MLOps Pipeline
+# Seismic facies MLOps pipeline
 
-A production-ready MLOps pipeline for seismic data classification demonstrating end-to-end machine learning lifecycle management.
+Patch classification into **real facies labels** on the public F3 North Sea benchmark
+(Alaudah et al., 2019), with a promotion gate, one served sklearn Pipeline, and CI that can fail.
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![MLflow](https://img.shields.io/badge/MLflow-2.x-blue.svg)](https://mlflow.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-## Features
-
-- **40 Features**: 8 handcrafted + 32 PCA embeddings from seismic traces
-- **Hyperparameter Optimization**: Optuna with TPE (Tree of Parzen Estimators)
-- **Experiment Tracking**: MLflow for metrics, parameters, and artifacts
-- **Model Registry**: Versioned model management with MLflow
-- **Feature Store**: Feast integration for feature management
-- **RAG Pipeline**: FAISS vector store with TF-IDF embeddings
-- **LLM Integration**: Ollama for intelligent analysis and insights
-- **Model Serving**: FastAPI REST API with batch inference support
-- **Monitoring**: Prometheus metrics and drift detection
-- **CI/CD**: GitHub Actions workflow with validation gates
-
-## Quick Start
-
-### Option 1: Docker (Recommended for Teams)
+## Quick start
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/seismic-mlops-pipeline.git
-cd seismic-mlops-pipeline
-
-# Quick start (Linux/Mac)
-chmod +x scripts/docker-start.sh
-./scripts/docker-start.sh
-
-# Quick start (Windows)
-scripts\docker-start.bat
-
-# Or manually:
-docker-compose up -d
-docker-compose exec mlops python run_all_stages.py
+git clone https://github.com/vospr/seismic-mlops-pipeline && cd seismic-mlops-pipeline
+make demo      # needs uv (https://docs.astral.sh/uv/); installs from uv.lock, trains on the committed
+               # fixture, promotes through the gate, starts the API, queries it
+make test      # 27 acceptance tests
 ```
 
-**Services available after startup:**
-- API Server: http://localhost:8000
-- MLflow UI: http://localhost:5000
-- Metrics: http://localhost:8001/metrics
+`make demo` log from this repo: [`docs/results/demo_fixture.log`](docs/results/demo_fixture.log).
 
-### Option 2: Local Installation
+## What it does
+
+```
+F3 patches (32x32, real facies label = centre pixel)
+   -> one sklearn Pipeline: StandardScaler -> PCA(32) -> HistGradientBoostingClassifier
+      fitted on train sections only; gate decides on a validation block; test1 reported once
+   -> logged to MLflow as a single model
+   -> promotion gate: must beat majority-class baseline AND the current `champion` alias
+   -> FastAPI loads models:/seismic-facies@champion and serves it as-is
+```
+
+- **Labels**: the six F3 facies from the benchmark. No synthetic labels.
+- **Split** (`block_split` in `data.py`): the benchmark `train` volume is cut into contiguous blocks of sections:
+  train = sections 0-290, a 10-section gap, validation = sections 301-400. Random patch splits would leak because
+  overlapping patches of one section land on both sides. `test1` is the benchmark's separate volume.
+- **Test1 is not used for any decision.** Model-family choice (`scripts/model_family_comparison.py`) and the gate
+  use validation only; test1 is predicted once per run, after the gate decision, and only reported.
+  Tests: `test_06_selection_leak.py` (gate result unchanged when test1 labels are scrambled; one test1 prediction per
+  run; disjoint blocks; the comparison script never reads test1).
+- **One model object**: `src/seismic_mlops/serve.py` has no feature code; it flattens the patch and calls the
+  registered Pipeline. Test `test_04_serving.py` asserts served outputs equal the training Pipeline's and that
+  the serving module contains no PCA/scaler/statistics code.
+- **Gate** (`src/seismic_mlops/gate.py`): challenger must beat the majority-class baseline on accuracy and
+  macro-F1, and the current champion on macro-F1 (re-scored on the same validation set). A rejected challenger is
+  still registered as a version (auditable) but does not get the `champion` alias.
+
+## Results (real benchmark, whatever they are)
+
+Full benchmark: 20,000 train / 5,000 validation / 5,000 test1 patches
+([`docs/results/f3_run1.log`](docs/results/f3_run1.log)). The gate decided on the validation column.
+
+| | validation accuracy | validation macro-F1 | **test1 accuracy** | **test1 macro-F1** |
+|---|---|---|---|---|
+| Majority-class baseline | 0.524 | 0.137 | 0.515 | 0.113 |
+| This model | 0.838 | 0.426 | **0.717** | **0.514** |
+
+Test1 per class (same log): good on the large facies (class 2: F1 0.83; class 1: 0.80), but **class 4 recall is
+0.09 and class 5 recall is 0.02**. Class 4 is 3.0% of sampled train patches and 15.6% of sampled test1 patches,
+so this is partly a distribution shift between regions. This is a 32x32 patch classifier on raw pixels, not an
+interpretation tool.
+
+Second identical run was **rejected** by the gate ("macro_f1 0.426 does not beat champion 0.426",
+[`docs/results/f3_run2.log`](docs/results/f3_run2.log)).
+
+Committed fixture (600 train / 300 validation / 300 test1 patches) is much smaller and noisier. Validation 0.760
+accuracy vs 0.570 baseline; test1 0.630 vs 0.543 accuracy, macro-F1 0.374 vs 0.117
+([`docs/results/demo_fixture.log`](docs/results/demo_fixture.log)).
+
+### Caveats
+
+- **The model family was first looked at on test1, before the validation split existed.** An earlier version of this
+  repo chose gradient boosting after seeing test1 numbers (logistic regression failed to beat the baseline there). The
+  choice was then re-made on validation only and came out the same
+  ([`docs/results/model_family_comparison.log`](docs/results/model_family_comparison.log): HGB 0.824 vs RF 0.788 vs
+  logistic regression 0.507 validation accuracy, baseline 0.531). The earlier look cannot be undone, so treat test1 as
+  mostly, not perfectly, untouched. No hyperparameter search was done.
+- **The validation block is easy and nearly lacks rare facies**: class 3 is 0.7%, class 4 0.0% and class 5 0.2% of
+  validation patches, so the gate's macro-F1 says little about rare-class performance. Validation accuracy (0.838)
+  is higher than test1 accuracy (0.717) for the same reason.
+- Patches are sampled at random positions inside each block, so patches within a block overlap spatially.
+- Single seed, no confidence intervals.
+
+## Get the real benchmark
+
+Source: Alaudah, Michałowicz, Alfarraj, AlRegib, *A machine learning benchmark for facies classification*,
+Interpretation 2019 (arXiv:1901.07659). Zenodo record 3755060.
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/seismic-mlops-pipeline.git
-cd seismic-mlops-pipeline
-
-# Quick setup (Linux/Mac)
-chmod +x scripts/setup-local.sh
-./scripts/setup-local.sh
-
-# Quick setup (Windows)
-scripts\setup-local.bat
-
-# Or manually:
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or: venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-
-# Run the pipeline
-python run_all_stages.py
+make f3-download   # downloads data.zip (1,051,449,986 bytes), verifies MD5, unzips to data/f3/
+make f3            # trains + gates on the full benchmark
 ```
 
-### Option 3: Quick Validation
+- URL: `https://zenodo.org/record/3755060/files/data.zip`
+- MD5: `bc5932279831a95c0b244fd765376d85` (matches Zenodo's published checksum; verified on the file used here)
 
-```bash
-# Validate all stages completed successfully
-python src/stage8_cicd.py
+`make fixture` regenerates `tests/fixtures/f3_patches.npz` (about 1.7 MB) from the downloaded benchmark with a fixed seed.
 
-# Run pipeline in quick mode (skip hyperparameter tuning)
-python run_all_stages.py --quick
+## Tests = acceptance checks
 
-# Start from specific stage
-python run_all_stages.py --from 3
-```
+Written before the code they check (`tests/`):
 
-## Pipeline Architecture
+| Check | Test |
+|---|---|
+| Real facies labels, fixture provenance, MD5 rejects corrupt file | `test_01_data.py` |
+| One Pipeline; scaler/PCA fit on train only (no leakage) | `test_02_pipeline.py` |
+| Gate rejects below-baseline, worse, and tied challengers; champion alias does not move | `test_03_gate.py` |
+| No selection on test1: disjoint blocks, gate independent of test1, one test1 prediction per run | `test_06_selection_leak.py` |
+| Served predictions == training Pipeline; bad shape rejected; no feature code in serve | `test_04_serving.py` |
+| CI has no `continue-on-error`; deps are pyproject + lockfile; cut-scope components absent from code | `test_05_repo_hygiene.py` |
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Seismic MLOps Pipeline                        │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  Stage 0          Stage 1           Stage 2          Stage 3    │
-│  ┌──────────┐    ┌──────────┐      ┌──────────┐    ┌──────────┐ │
-│  │ Sampling │───▶│ Ingest   │─────▶│ Features │───▶│ Training │ │
-│  │ KNN      │    │ Quality  │      │ 40 feat  │    │ MLflow   │ │
-│  └──────────┘    └──────────┘      └──────────┘    └──────────┘ │
-│       │               │                 │               │        │
-│       ▼               ▼                 ▼               ▼        │
-│  data/raw/       data/bronze/      data/silver/     models/     │
-│                                                                  │
-│  Stage 3b         Stage 4           Stage 5          Stage 6    │
-│  ┌──────────┐    ┌──────────┐      ┌──────────┐    ┌──────────┐ │
-│  │ Optuna   │───▶│ Evaluate │─────▶│ Registry │───▶│ Deploy   │ │
-│  │ TPE      │    │ Drift    │      │ Version  │    │ FastAPI  │ │
-│  └──────────┘    └──────────┘      └──────────┘    └──────────┘ │
-│       │               │                 │               │        │
-│       ▼               ▼                 ▼               ▼        │
-│  tuning.json     data/gold/        mlruns/        API:8000     │
-│                                                                  │
-│  Stage 7          Stage 8                                        │
-│  ┌──────────┐    ┌──────────┐                                   │
-│  │ Monitor  │    │ CI/CD    │                                   │
-│  │ Metrics  │    │ Validate │                                   │
-│  └──────────┘    └──────────┘                                   │
-│       │               │                                          │
-│       ▼               ▼                                          │
-│  Prometheus      GitHub Actions                                  │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+CI (`.github/workflows/ci.yml`) runs `make ci` = `pytest` + `make demo` on push to `main` and on PRs.
+No step is allowed to fail silently.
 
-## Pipeline Stages
+## How it extends
 
-| Stage | Script | Description |
-|-------|--------|-------------|
-| 0 | `stage0_data_sampling.py` | Sample F3 dataset, KNN imputation |
-| 1 | `stage1_data_ingestion.py` | Ingest SGY/SEGY, quality validation |
-| 2 | `stage2_feature_engineering.py` | Extract 40 features (8 handcrafted + 32 PCA) |
-| 3 | `stage3_model_training.py` | Train model with tuned hyperparameters |
-| 3b | `stage3_hyperparameter_tuning.py` | Optuna TPE optimization |
-| 4 | `stage4_model_evaluation.py` | Evaluate model, detect drift |
-| 5 | `stage5_model_registry.py` | Register model in MLflow |
-| 6 | `stage6_model_deployment.py` | FastAPI server + batch inference |
-| 7 | `stage7_monitoring.py` | Prometheus metrics, alerts |
-| 8 | `stage8_cicd.py` | CI/CD validation |
+Removed from this version to keep the pipeline connected end to end. Reasonable next steps, not implemented here:
 
-## Project Structure
-
-```
-seismic-mlops-pipeline/
-├── data/
-│   ├── raw/                    # Sampled SGY files
-│   ├── bronze/                 # Ingested data (Delta Lake)
-│   ├── silver/                 # Engineered features
-│   └── gold/                   # Predictions & results
-├── models/                     # Trained models & artifacts
-├── mlruns/                     # MLflow tracking
-├── feature_store/              # Feast feature store
-├── src/                        # Pipeline stages
-│   ├── stage0_data_sampling.py
-│   ├── stage1_data_ingestion.py
-│   ├── stage2_feature_engineering.py
-│   ├── stage3_model_training.py
-│   ├── stage3_hyperparameter_tuning.py
-│   ├── stage4_model_evaluation.py
-│   ├── stage5_model_registry.py
-│   ├── stage6_model_deployment.py
-│   ├── stage7_monitoring.py
-│   ├── stage8_cicd.py
-│   └── Code explanation.md     # Detailed documentation
-├── scripts/                    # Setup & utility scripts
-│   ├── docker-start.sh         # Docker quick start (Linux/Mac)
-│   ├── docker-start.bat        # Docker quick start (Windows)
-│   ├── setup-local.sh          # Local setup (Linux/Mac)
-│   └── setup-local.bat         # Local setup (Windows)
-├── .github/workflows/          # CI/CD workflows
-├── Dockerfile                  # Container definition
-├── docker-compose.yml          # Multi-service setup
-├── requirements.txt            # Python dependencies
-├── run_all_stages.py           # Run complete pipeline
-├── QUICK_START.md              # Quick start guide
-└── README.md                   # This file
-```
-
-## Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| Data Format | SGY/SEGY (segyio) |
-| Data Storage | Delta Lake, Parquet |
-| Feature Store | Feast |
-| ML Framework | scikit-learn |
-| Experiment Tracking | MLflow |
-| Hyperparameter Tuning | Optuna (TPE) |
-| LLM Integration | Ollama (llama3.1:8b) |
-| Vector Store | FAISS |
-| Model Serving | FastAPI |
-| Monitoring | Prometheus |
-| Containerization | Docker, Docker Compose |
-| CI/CD | GitHub Actions |
-
-## API Endpoints
-
-Start the server: `python src/stage6_model_deployment.py`
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/predict` | POST | Single prediction |
-| `/batch_predict` | POST | Batch predictions |
-| `/model_info` | GET | Model metadata |
-
-## MLflow UI
-
-```bash
-mlflow ui --backend-store-uri file:./mlruns --port 5000
-```
-
-Access at: http://localhost:5000
-
-## Prometheus Metrics
-
-After running Stage 7: http://localhost:8001/metrics
-
-| Metric | Description |
-|--------|-------------|
-| `seismic_model_accuracy` | Current model accuracy |
-| `seismic_drift_score` | Data drift score (0-1) |
-| `seismic_predictions_total` | Total predictions |
-
-## Documentation
-
-- **[QUICK_START.md](QUICK_START.md)** - Detailed quick start guide
-- **[src/Code explanation.md](src/Code%20explanation.md)** - Complete architecture documentation
-- **[PROJECT_DESCRIPTION_MLOPS.md](PROJECT_DESCRIPTION_MLOPS.md)** - MLOps requirements reference
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- F3 Netherlands seismic dataset
-- MLflow for experiment tracking
-- Optuna for hyperparameter optimization
-- Ollama for local LLM inference
+- a feature store (Feast) once more than one model consumes the same features
+- retrieval (FAISS/RAG) over run reports
+- separate dev/staging/prod environments
+- drift monitoring against the training reference, and API request metrics
+- a 2D CNN on the patches in place of PCA + trees
